@@ -612,27 +612,17 @@
 
         <!-- STEVE HERO CARD -->
         <div class="steve-card reveal">
-            <!-- CUSTOM VIDEO PLAYER -->
-            <div class="video-player-wrap" tabindex="-1">
-                <video
-                    id="steve-video"
-                    src="CLOUDINARY_VIDEO_URL"
-                    poster="CLOUDINARY_POSTER_URL"
-                    playsinline
-                    preload="none"
-                    tabindex="-1"
-                    disablepictureinpicture
-                    disableremoteplayback
-                ></video>
-                <div class="video-overlay" id="video-overlay">
-                    <div class="play-btn-custom" id="play-btn">
-                        <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-                    </div>
-                    <span class="video-overlay-label" data-i18n="proof.videoLabel">Watch Steve's story</span>
+            <!-- CANVA VIDEO EMBED -->
+            <div class="video-player-wrap" tabindex="-1" style="padding:0;min-height:unset;aspect-ratio:16/9;">
+                <div style="position:relative;width:100%;height:100%;padding-top:56.25%;">
+                    <iframe loading="lazy" style="position:absolute;width:100%;height:100%;top:0;left:0;border:none;padding:0;margin:0;border-radius:0;"
+                        src="https://www.canva.com/design/DAGrMtplBrs/F6kd7s0oLw8JoxdmUeBwIA/watch?embed"
+                        allowfullscreen="allowfullscreen" allow="fullscreen">
+                    </iframe>
                 </div>
                 <div class="video-nameplate">
                     <div class="video-nameplate-name" data-i18n="proof.videoName">Steve</div>
-                    <div class="video-nameplate-role" data-i18n="proof.videoRole">Power Solar &bull; Client</div>
+                    <div class="video-nameplate-role" data-i18n="proof.videoRole">UBH Solar &bull; Client</div>
                 </div>
             </div>
 
@@ -648,7 +638,7 @@
                     </div>
                     <div class="steve-pill">
                         <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-                        <span data-i18n="proof.pill2">10 closed deals</span>
+                        <span data-i18n="proof.pill2">6 deals in 30 days — 4 more closed after</span>
                     </div>
                     <div class="steve-pill">
                         <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
@@ -706,7 +696,7 @@
                 <div class="math-equals"></div>
                 <div class="math-result" data-i18n="math.result">60 appointments &times; your close rate &times; your deal size = <em>your number.</em></div>
             </div>
-            <p class="math-caption reveal reveal-d2" data-i18n="math.caption">Steve had 333 door knock contacts. The system booked 30 appointments. He closed 10. $60,000 in 30 days. That is 9% contact-to-book in the real world. You have 6x that many leads sitting in your CRM right now.</p>
+            <p class="math-caption reveal reveal-d2" data-i18n="math.caption">Steve had 333 door knock contacts. The system booked 30 appointments. He closed 6 in the first 30 days — then closed 4 more from the same pipeline after. 10 total deals. $60,000. That is 9% contact-to-book in the real world. You have 6x that many leads sitting in your CRM right now.</p>
         </div>
     </div>
 </section>
@@ -1253,10 +1243,35 @@
     }, {threshold: 0.5});
     if(phoneWrap) phoneIO.observe(phoneWrap);
 
-    // CTA — swap with real Calendly link
-    document.querySelectorAll('.cta-trigger').forEach(btn => {
-        btn.addEventListener('click', () => window.open('https://calendly.com/YOUR_LINK', '_blank'));
-    });
+    // BOOKING MODAL
+    (function(){
+        // Create modal
+        const modal = document.createElement('div');
+        modal.id = 'booking-modal';
+        modal.style.cssText = 'display:none;position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,.85);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);align-items:center;justify-content:center;padding:20px;';
+        modal.innerHTML = `
+            <div style="position:relative;width:100%;max-width:780px;max-height:90vh;background:#111;border:1px solid #262626;border-radius:16px;overflow:hidden;display:flex;flex-direction:column;">
+                <div style="display:flex;align-items:center;justify-content:space-between;padding:18px 24px;border-bottom:1px solid #262626;flex-shrink:0;">
+                    <span style="font-family:'DM Sans',sans-serif;font-size:.8rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:#c8842d;">Book a Conversation</span>
+                    <button id="booking-close" style="background:none;border:none;cursor:pointer;color:#6b6b6b;font-size:1.4rem;line-height:1;padding:4px 8px;transition:color .2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#6b6b6b'">&times;</button>
+                </div>
+                <div style="flex:1;overflow:auto;min-height:600px;">
+                    <iframe src="https://api.leadconnectorhq.com/widget/booking/kBieJ7GYlLvy0Xafgsh0" style="width:100%;height:100%;min-height:600px;border:none;" loading="lazy"></iframe>
+                </div>
+            </div>`;
+        document.body.appendChild(modal);
+
+        function openModal(){ modal.style.display = 'flex'; document.body.style.overflow = 'hidden'; }
+        function closeModal(){ modal.style.display = 'none'; document.body.style.overflow = ''; }
+
+        document.getElementById('booking-close').addEventListener('click', closeModal);
+        modal.addEventListener('click', function(e){ if(e.target === modal) closeModal(); });
+        document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeModal(); });
+
+        document.querySelectorAll('.cta-trigger').forEach(btn => {
+            btn.addEventListener('click', openModal);
+        });
+    })();
 
     // PARTICLE FIELD + ROCKET ANIMATION
     (function(){
@@ -1749,11 +1764,11 @@
         // PROOF / STEVE
         "proof.videoLabel": "Mira la historia de Steve",
         "proof.videoName": "Steve",
-        "proof.videoRole": "Power Solar \u2022 Cliente",
+        "proof.videoRole": "UBH Solar \u2022 Cliente",
         "proof.eyebrow": "Primeros 30 D\u00edas \u2022 Solo Toques de Puerta",
         "proof.source": "De una sola lista muerta que su equipo hab\u00eda <strong>descartado por completo.</strong> Inbound, no-shows y contactos viejos todav\u00eda sin tocar.",
         "proof.pill1": "30 citas agendadas",
-        "proof.pill2": "10 deals cerrados",
+        "proof.pill2": "6 deals cerrados en 30 d\u00edas \u2014 4 m\u00e1s despu\u00e9s",
         "proof.pill3": "14 d\u00edas de kickoff a en vivo",
         "proof.zero": "<svg viewBox=\"0 0 24 24\"><line x1=\"12\" y1=\"5\" x2=\"12\" y2=\"19\"/><line x1=\"5\" y1=\"12\" x2=\"19\" y2=\"12\"/></svg> $0 gasto adicional en anuncios",
 
@@ -1770,7 +1785,7 @@
         "math.op2": "citas",
         "math.desc2": "de leads que tu equipo ya hab\u00eda dado por muertos",
         "math.result": "60 citas \u00d7 tu tasa de cierre \u00d7 tu tama\u00f1o de deal = <em>tu n\u00famero.</em>",
-        "math.caption": "Steve ten\u00eda 333 contactos de toques de puerta. El sistema agend\u00f3 30 citas. Cerr\u00f3 10. $60,000 en 30 d\u00edas. Eso es 9% de contacto-a-cita en el mundo real. T\u00fa tienes 6x esa cantidad de leads sentaos en tu CRM ahora mismo.",
+        "math.caption": "Steve ten\u00eda 333 contactos de toques de puerta. El sistema agend\u00f3 30 citas. Cerr\u00f3 6 en los primeros 30 d\u00edas \u2014 y despu\u00e9s cerr\u00f3 4 m\u00e1s del mismo pipeline. 10 deals en total. $60,000. Eso es 9% de contacto-a-cita en el mundo real. T\u00fa tienes 6x esa cantidad de leads sentaos en tu CRM ahora mismo.",
 
         // LEAK
         "leak.h2": "Cinco lugares donde tu pipeline pierde revenue todos los d\u00edas.",
