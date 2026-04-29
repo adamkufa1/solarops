@@ -697,6 +697,13 @@
                 <div class="math-result" data-i18n="math.result">60 appointments &times; your close rate &times; your deal size = <em>your number.</em></div>
             </div>
             <p class="math-caption reveal reveal-d2" data-i18n="math.caption">Steve had 333 door knock contacts. The system booked 30 appointments. He closed 6 in the first 30 days — then closed 4 more from the same pipeline after. 10 total deals. $60,000. That is 9% contact-to-book in the real world. You have 6x that many leads sitting in your CRM right now.</p>
+            <div class="reveal reveal-d3" style="margin-top:48px;text-align:center;">
+                <button id="rm-open-btn" style="display:inline-flex;align-items:center;gap:10px;padding:16px 38px;background:transparent;border:1px solid var(--whiskey);color:var(--whiskey);font-family:var(--sans);font-size:1rem;font-weight:500;letter-spacing:.04em;border-radius:6px;cursor:pointer;transition:all .3s;" onmouseover="this.style.background='rgba(200,132,45,.1)';this.style.transform='translateY(-2px)'" onmouseout="this.style.background='transparent';this.style.transform='translateY(0)'">
+                    Calculate Your Number
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </button>
+                <p style="margin-top:12px;font-size:.85rem;color:var(--steel);">Enter your numbers. See your pipeline value in real time.</p>
+            </div>
         </div>
     </div>
 </section>
@@ -1174,6 +1181,522 @@
     <div class="footer-brand">Solar Ops <span>Mafia</span></div>
     <p class="footer-note" data-i18n="footer.note">Solar companies only &bull; Built custom, not configured</p>
 </footer>
+
+<!-- ══════════════════════════════════════════════════════════
+     REACTIVATION MACHINE MODAL
+     ══════════════════════════════════════════════════════════ -->
+<div id="rm-modal" style="display:none;position:fixed;inset:0;z-index:10001;background:rgba(0,0,0,.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);align-items:center;justify-content:center;padding:16px;">
+    <div style="position:relative;width:100%;max-width:680px;height:min(88vh,700px);background:#0b0b0b;border:1px solid #262626;border-radius:20px;overflow:hidden;display:flex;flex-direction:column;">
+        <!-- Modal header -->
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 24px;border-bottom:1px solid #262626;flex-shrink:0;">
+            <span style="font-family:'DM Sans',sans-serif;font-size:.75rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#c8842d;">Reactivation Machine</span>
+            <button id="rm-close" style="background:none;border:none;cursor:pointer;color:#6b6b6b;font-size:1.5rem;line-height:1;padding:2px 8px;transition:color .2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#6b6b6b'">&times;</button>
+        </div>
+        <!-- Screen area — scrollable -->
+        <div id="rm-app" style="flex:1;overflow-y:auto;overflow-x:hidden;position:relative;"></div>
+        <!-- Nav dots — always pinned to bottom -->
+        <div id="rm-dots-bar" style="display:flex;gap:10px;justify-content:center;padding:12px 0;border-top:1px solid #262626;flex-shrink:0;background:#0b0b0b;">
+            <button class="rm-dot rm-active-dot" onclick="rmGoTo(1)"></button>
+            <button class="rm-dot" onclick="rmGoTo(2)"></button>
+            <button class="rm-dot" onclick="rmGoTo(3)"></button>
+            <button class="rm-dot" onclick="rmGoTo(4)"></button>
+            <button class="rm-dot" onclick="rmGoTo(5)"></button>
+        </div>
+    </div>
+</div>
+
+<style>
+/* ── RM NAMESPACED STYLES ───────────────────────────────── */
+#rm-app { font-family: 'DM Sans', -apple-system, sans-serif; color: #f5f5f0; }
+#rm-app *:not(.rm-bubble):not(.rm-typing):not(.rm-typing i) { box-sizing: border-box; }
+.rm-screen { display: none; flex-direction: column; align-items: center; text-align: center; padding: 28px 24px 32px; }
+.rm-screen.rm-active { display: flex; }
+.rm-cta-btn { display: inline-block; padding: 14px 32px; background: #c8842d; color: #0b0b0b; font-family: 'DM Sans', sans-serif; font-size: .95rem; font-weight: 600; border: none; border-radius: 8px; cursor: pointer; transition: all .3s; letter-spacing: .01em; text-decoration: none; }
+.rm-cta-btn:hover { background: #d9963e; transform: translateY(-2px); }
+/* nav dots pinned bar */
+.rm-dot { width: 8px; height: 8px; border-radius: 50%; background: #3a3a3a; transition: all .4s; cursor: pointer; border: none; padding: 0; }
+.rm-dot.rm-active-dot { background: #c8842d; box-shadow: 0 0 8px rgba(200,132,45,.4); }
+/* Screen 1 */
+.rm-calc-label { font-size: .7rem; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: #c8842d; margin-bottom: 10px; }
+.rm-calc-amount { font-family: 'Playfair Display', Georgia, serif; font-size: clamp(2.4rem, 7vw, 4rem); font-weight: 700; color: #f5f5f0; line-height: 1; margin-bottom: 6px; transition: color .3s; }
+.rm-calc-sub { font-size: .95rem; color: #999; margin-bottom: 24px; line-height: 1.6; }
+.rm-calc-card { width: 100%; max-width: 400px; background: #1a1a1a; border: 1px solid #262626; border-radius: 14px; padding: 24px 20px; margin-bottom: 16px; }
+.rm-calc-card-label { font-size: .66rem; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: #999; margin-bottom: 18px; display: flex; align-items: center; gap: 10px; }
+.rm-calc-card-label::after { content: ''; flex: 1; height: 1px; background: #262626; }
+.rm-calc-field { margin-bottom: 14px; }
+.rm-calc-field:last-child { margin-bottom: 0; }
+.rm-calc-field-label { font-size: .8rem; color: #d4d0c8; margin-bottom: 5px; display: block; }
+.rm-input-row { display: flex; align-items: center; background: #262626; border: 1px solid #3a3a3a; border-radius: 9px; overflow: hidden; transition: border-color .25s; }
+.rm-input-row:focus-within { border-color: #c8842d; box-shadow: 0 0 0 2px rgba(200,132,45,.12); }
+.rm-input-pfx, .rm-input-sfx { padding: 0 12px; font-size: .88rem; font-weight: 600; color: #c8842d; background: rgba(200,132,45,.08); min-width: 36px; display: flex; align-items: center; justify-content: center; height: 44px; user-select: none; }
+.rm-input-pfx { border-right: 1px solid #3a3a3a; }
+.rm-input-sfx { border-left: 1px solid #3a3a3a; }
+.rm-calc-field input { flex: 1; background: transparent; border: none; outline: none; padding: 0 12px; font-family: 'DM Sans', sans-serif; font-size: 1rem; font-weight: 500; color: #f5f5f0; height: 44px; -moz-appearance: textfield; appearance: textfield; }
+.rm-calc-field input::-webkit-outer-spin-button, .rm-calc-field input::-webkit-inner-spin-button { -webkit-appearance: none; }
+.rm-system-rates { width: 100%; max-width: 400px; display: flex; gap: 1px; margin-bottom: 16px; border-radius: 9px; overflow: hidden; }
+.rm-rate { flex: 1; background: #1a1a1a; padding: 12px 10px; text-align: center; }
+.rm-rate-val { font-family: 'Playfair Display', Georgia, serif; font-size: 1.1rem; font-weight: 700; color: #c8842d; margin-bottom: 2px; }
+.rm-rate-label { font-size: .6rem; font-weight: 500; letter-spacing: .1em; text-transform: uppercase; color: #6b6b6b; }
+.rm-funnel { width: 100%; max-width: 400px; display: flex; align-items: center; justify-content: center; gap: 6px; margin-bottom: 24px; flex-wrap: wrap; }
+.rm-funnel-step { text-align: center; }
+.rm-funnel-val { font-size: .9rem; font-weight: 600; color: #d4d0c8; }
+.rm-funnel-lbl { font-size: .52rem; font-weight: 500; letter-spacing: .06em; text-transform: uppercase; color: #6b6b6b; margin-top: 1px; }
+.rm-funnel-arr { color: #3a3a3a; font-size: .7rem; }
+/* Screen 2 — iPhone */
+.rm-iphone { width: 300px; max-width: 80vw; height: 480px; max-height: 58vh; background: #000; border-radius: 44px; border: 3px solid #2a2a2a; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 28px 70px rgba(0,0,0,.7), 0 0 0 1px rgba(255,255,255,.06); position: relative; margin-bottom: 14px; flex-shrink: 0; }
+.rm-di { position: absolute; top: 10px; left: 50%; transform: translateX(-50%); width: 110px; height: 32px; background: #000; border-radius: 18px; z-index: 10; display: flex; align-items: center; justify-content: flex-end; padding-right: 10px; }
+.rm-di-cam { width: 10px; height: 10px; border-radius: 50%; background: radial-gradient(circle at 40% 40%, #1a1a3a, #0a0a18 60%); border: 1.5px solid #1a1a2a; }
+.rm-sb { display: flex; justify-content: space-between; align-items: flex-end; padding: 14px 24px 0; height: 50px; font-size: 13px; font-weight: 600; color: #fff; font-family: -apple-system, sans-serif; position: relative; z-index: 5; }
+.rm-sb-right { display: flex; align-items: center; gap: 5px; }
+.rm-sb-sig { display: flex; gap: 1.5px; align-items: flex-end; height: 10px; }
+.rm-sb-sig i { display: block; width: 3px; border-radius: 1px; background: #fff; }
+.rm-sb-sig i:nth-child(1){height:3px} .rm-sb-sig i:nth-child(2){height:5px} .rm-sb-sig i:nth-child(3){height:7px} .rm-sb-sig i:nth-child(4){height:10px}
+.rm-sb-batt { width: 22px; height: 10px; border: 1.5px solid rgba(255,255,255,.5); border-radius: 3px; display: flex; align-items: center; padding: 1.5px; position: relative; }
+.rm-sb-batt::after { content: ''; position: absolute; right: -4px; top: 50%; transform: translateY(-50%); width: 2px; height: 5px; background: rgba(255,255,255,.4); border-radius: 0 2px 2px 0; }
+.rm-sb-batt-fill { width: 75%; height: 100%; background: #fff; border-radius: 1px; }
+.rm-msg-hdr { display: flex; align-items: center; padding: 5px 10px 8px; background: rgba(0,0,0,.6); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,255,255,.06); }
+.rm-msg-back { color: #0A84FF; font-size: 20px; font-weight: 300; width: 28px; text-align: center; }
+.rm-msg-av { width: 30px; height: 30px; border-radius: 50%; background: linear-gradient(135deg,#5856D6,#AF52DE); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; color: #fff; flex-shrink: 0; }
+.rm-msg-contact { flex: 1; margin-left: 8px; }
+.rm-msg-name { font-size: 14px; font-weight: 600; color: #fff; font-family: -apple-system, sans-serif; line-height: 1.2; }
+.rm-msg-sub { font-size: 10px; color: rgba(255,255,255,.35); font-family: -apple-system, sans-serif; }
+.rm-chat { flex: 1; overflow-y: auto; padding: 8px 10px 6px; display: flex; flex-direction: column; gap: 3px; scroll-behavior: smooth; background: #000; text-align: left; }
+.rm-chat::-webkit-scrollbar { width: 0; }
+.rm-msg { display: flex; width: 100%; transform: scale(0); opacity: 0; transform-origin: bottom left; transition: transform .25s cubic-bezier(.175,.885,.32,1.1), opacity .2s ease; }
+.rm-msg.show { transform: scale(1); opacity: 1; }
+.rm-msg-out { justify-content: flex-end !important; transform-origin: bottom right; }
+.rm-msg-in { justify-content: flex-start !important; transform-origin: bottom left; }
+.rm-bubble { display: inline-block !important; max-width: 76% !important; padding: 8px 12px !important; border-radius: 17px !important; font-size: 14px !important; line-height: 1.4 !important; word-break: break-word; font-family: -apple-system, 'Helvetica Neue', sans-serif !important; text-align: left !important; }
+.rm-msg-out .rm-bubble { background: #34C759 !important; color: #fff !important; border-bottom-right-radius: 4px !important; }
+.rm-msg-in .rm-bubble { background: #3a3a3c !important; color: #fff !important; border-bottom-left-radius: 4px !important; }
+.rm-typing { display: inline-flex !important; padding: 9px 14px !important; border-radius: 17px !important; border-bottom-left-radius: 4px !important; background: #3a3a3c !important; gap: 4px; align-items: center; }
+.rm-typing i { display: block !important; width: 7px !important; height: 7px !important; border-radius: 50% !important; background: rgba(255,255,255,.4) !important; animation: rmTypeDots 1.4s infinite; }
+.rm-typing i:nth-child(2){animation-delay:.2s} .rm-typing i:nth-child(3){animation-delay:.4s}
+@keyframes rmTypeDots { 0%,60%,100%{opacity:.3;transform:translateY(0)} 30%{opacity:.9;transform:translateY(-4px)} }
+.rm-inputbar { display: flex; align-items: center; gap: 7px; padding: 7px 9px 24px; background: rgba(0,0,0,.8); backdrop-filter: blur(20px); border-top: 1px solid rgba(255,255,255,.06); }
+.rm-inputbar-plus { width: 27px; height: 27px; border-radius: 50%; background: #262628; display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,.5); font-size: 17px; flex-shrink: 0; }
+.rm-inputbar-field { flex: 1; height: 30px; border-radius: 15px; border: 1px solid rgba(255,255,255,.12); padding: 0 12px; color: rgba(255,255,255,.35); font-size: 13px; display: flex; align-items: center; }
+.rm-sms-result { font-size: .9rem; color: #c8842d; font-weight: 500; letter-spacing: .04em; opacity: 0; transition: opacity .8s; margin-bottom: 12px; min-height: 1.2em; text-align:center; }
+.rm-sms-result.visible { opacity: 1; }
+#rm-sms-next { opacity: 0; transition: opacity .6s; pointer-events: none; }
+#rm-sms-next.visible { opacity: 1; pointer-events: auto; }
+/* Scenario tabs */
+.rm-scenario-tabs { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; width: 100%; max-width: 520px; }
+.rm-tab { padding: 7px 12px; background: #1a1a1a; border: 1px solid #3a3a3a; border-radius: 20px; color: #999; font-family: 'DM Sans', sans-serif; font-size: .72rem; font-weight: 500; cursor: pointer; transition: all .25s; white-space: nowrap; }
+.rm-tab:hover { border-color: #c8842d; color: #c8842d; }
+.rm-tab.rm-tab-active { background: rgba(200,132,45,.12); border-color: #c8842d; color: #c8842d; }
+.rm-scenario-label { font-size: .75rem; color: #6b6b6b; letter-spacing: .04em; font-style: italic; margin-bottom: 2px; }
+/* Notification card */
+.rm-notif { width: 300px; max-width: 80vw; background: rgba(26,26,26,.95); border: 1px solid #3a3a3a; border-radius: 14px; padding: 14px 16px; text-align: left; display: flex; gap: 12px; align-items: flex-start; margin-top: 8px; opacity: 0; transform: translateY(12px); transition: opacity .5s ease, transform .5s ease; }
+.rm-notif.visible { opacity: 1; transform: translateY(0); }
+.rm-notif-icon { width: 36px; height: 36px; border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+.rm-notif-icon.green { background: rgba(52,199,89,.15); }
+.rm-notif-icon.amber { background: rgba(200,132,45,.15); }
+.rm-notif-body { flex: 1; }
+.rm-notif-title { font-size: .78rem; font-weight: 700; color: #f5f5f0; margin-bottom: 2px; }
+.rm-notif-msg { font-size: .72rem; color: #999; line-height: 1.5; }
+.rm-notif-time { font-size: .65rem; color: #6b6b6b; margin-top: 4px; }
+/* Screen 3 */
+.rm-setter-badge { font-size: .68rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: #c8842d; margin-bottom: 14px; }
+.rm-setter-title { font-family: 'Playfair Display', Georgia, serif; font-size: clamp(1.4rem, 3.5vw, 2rem); font-weight: 700; color: #f5f5f0; margin-bottom: 32px; }
+.rm-setter-steps { display: flex; flex-direction: column; width: 100%; max-width: 380px; text-align: left; margin-bottom: 24px; }
+.rm-setter-step { display: flex; gap: 14px; padding: 14px 0; border-bottom: 1px solid #262626; opacity: 0; transform: translateY(14px); transition: all .5s ease; }
+.rm-setter-step:last-child { border-bottom: none; }
+.rm-setter-num { width: 28px; height: 28px; border-radius: 50%; background: rgba(200,132,45,.1); border: 1px solid rgba(200,132,45,.25); display: flex; align-items: center; justify-content: center; color: #c8842d; font-size: .8rem; font-weight: 700; flex-shrink: 0; }
+.rm-setter-step-title { font-size: .9rem; font-weight: 600; color: #f5f5f0; margin-bottom: 2px; }
+.rm-setter-step-desc { font-size: .78rem; color: #999; line-height: 1.5; }
+.rm-setter-line { font-family: 'Playfair Display', Georgia, serif; font-style: italic; font-size: 1rem; color: #c8842d; line-height: 1.7; max-width: 380px; margin-bottom: 28px; opacity: 0; transition: opacity .8s; }
+#rm-setter-next { opacity: 0; pointer-events: none; transition: opacity .6s; }
+/* Screen 4 */
+.rm-closer-card { width: 380px; max-width: 90vw; background: #111; border: 1px solid #262626; border-radius: 18px; padding: 28px 24px; text-align: left; margin-bottom: 28px; box-shadow: 0 16px 60px rgba(0,0,0,.4); }
+.rm-card-badge { display: inline-block; font-size: .68rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: #c8842d; background: rgba(200,132,45,.1); border: 1px solid rgba(200,132,45,.2); padding: 4px 12px; border-radius: 20px; margin-bottom: 18px; }
+.rm-card-name { font-family: 'Playfair Display', Georgia, serif; font-size: 1.6rem; font-weight: 700; color: #f5f5f0; margin-bottom: 3px; }
+.rm-card-addr { font-size: .9rem; color: #999; margin-bottom: 20px; }
+.rm-card-div { height: 1px; background: #262626; margin: 0 -4px 18px; }
+.rm-check-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
+.rm-check-item { display: flex; align-items: center; gap: 12px; opacity: 0; }
+.rm-check-icon { width: 26px; height: 26px; border-radius: 50%; background: rgba(200,132,45,.1); border: 1px solid rgba(200,132,45,.25); display: flex; align-items: center; justify-content: center; color: #c8842d; font-size: 12px; font-weight: 700; flex-shrink: 0; }
+.rm-check-text { font-size: .9rem; color: #d4d0c8; font-weight: 500; }
+.rm-conf-label { display: flex; justify-content: space-between; font-size: .72rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: #999; margin-bottom: 7px; }
+.rm-conf-pct { color: #c8842d; font-size: .9rem; letter-spacing: 0; }
+.rm-conf-track { height: 5px; background: #262626; border-radius: 4px; overflow: hidden; }
+.rm-conf-fill { height: 100%; width: 0; background: linear-gradient(90deg,#c8842d,#d9963e); border-radius: 4px; }
+.rm-closer-card.rm-animating .rm-check-item { animation: rmCheckIn .45s ease forwards; }
+.rm-closer-card.rm-animating .rm-check-item:nth-child(1){animation-delay:.15s}
+.rm-closer-card.rm-animating .rm-check-item:nth-child(2){animation-delay:.35s}
+.rm-closer-card.rm-animating .rm-check-item:nth-child(3){animation-delay:.55s}
+.rm-closer-card.rm-animating .rm-check-item:nth-child(4){animation-delay:.75s}
+.rm-closer-card.rm-animating .rm-check-item:nth-child(5){animation-delay:.95s}
+.rm-closer-card.rm-animating .rm-conf-fill { animation: rmFillBar 1s ease 1.3s forwards; }
+@keyframes rmCheckIn { from{opacity:0;transform:translateX(-14px)} to{opacity:1;transform:translateX(0)} }
+@keyframes rmFillBar { from{width:0} to{width:78%} }
+/* Screen 5 */
+.rm-big-number { font-family: 'Playfair Display', Georgia, serif; font-size: clamp(3rem, 9vw, 6rem); font-weight: 700; color: #f5f5f0; line-height: 1; margin-bottom: 18px; }
+.rm-big-line { font-size: 1.1rem; color: #999; font-weight: 400; line-height: 1.8; }
+.rm-big-line strong { color: #d4d0c8; font-weight: 500; }
+</style>
+
+<!-- RM APP HTML -->
+<script>
+(function() {
+    // ── DOM ──────────────────────────────────────────────────
+    var modal = document.getElementById('rm-modal');
+    var app   = document.getElementById('rm-app');
+
+    var AI_BOOK = 0.03, SHOWUP = 0.78;
+    var rmCurrent = 1, rmStored = 0;
+    var rmSmsPlayed = false, rmSetterPlayed = false, rmCloserPlayed = false, rm5Played = false;
+    var rmAnimId = null, rmCalcTimer = null;
+
+    // ── BUILD APP HTML ───────────────────────────────────────
+    app.innerHTML = [
+      // Screen 1
+      '<div class="rm-screen rm-active" id="rms-1">',
+        '<div class="rm-calc-label">Recoverable Pipeline Value</div>',
+        '<div class="rm-calc-amount" id="rm-calc-amount">$26,732</div>',
+        '<p class="rm-calc-sub">Sitting in your dead leads right now.</p>',
+        '<div class="rm-calc-card">',
+          '<div class="rm-calc-card-label">Your numbers</div>',
+          '<div class="rm-calc-field"><label class="rm-calc-field-label">Dead leads in your CRM</label>',
+            '<div class="rm-input-row"><div class="rm-input-pfx">#</div><input type="number" id="rm-leads" value="2000" min="0" step="100" inputmode="numeric"></div></div>',
+          '<div class="rm-calc-field"><label class="rm-calc-field-label">Your close rate</label>',
+            '<div class="rm-input-row"><input type="number" id="rm-close" value="28" min="0" max="100" step="1" inputmode="numeric"><div class="rm-input-sfx">%</div></div></div>',
+          '<div class="rm-calc-field"><label class="rm-calc-field-label">Install rate</label>',
+            '<div class="rm-input-row"><input type="number" id="rm-install" value="85" min="0" max="100" step="1" inputmode="numeric"><div class="rm-input-sfx">%</div></div></div>',
+          '<div class="rm-calc-field"><label class="rm-calc-field-label">Average deal size</label>',
+            '<div class="rm-input-row"><div class="rm-input-pfx">$</div><input type="number" id="rm-deal" value="2400" min="0" step="100" inputmode="numeric"></div></div>',
+        '</div>',
+        '<div class="rm-system-rates">',
+          '<div class="rm-rate"><div class="rm-rate-val">3%</div><div class="rm-rate-label">AI book rate</div></div>',
+          '<div class="rm-rate"><div class="rm-rate-val">78%</div><div class="rm-rate-label">Show-up rate</div></div>',
+        '</div>',
+        '<div class="rm-funnel">',
+          '<div class="rm-funnel-step"><div class="rm-funnel-val" id="rm-f-leads">2,000</div><div class="rm-funnel-lbl">Leads</div></div>',
+          '<span class="rm-funnel-arr">→</span>',
+          '<div class="rm-funnel-step"><div class="rm-funnel-val" id="rm-f-appts">60</div><div class="rm-funnel-lbl">Appts</div></div>',
+          '<span class="rm-funnel-arr">→</span>',
+          '<div class="rm-funnel-step"><div class="rm-funnel-val" id="rm-f-sits">47</div><div class="rm-funnel-lbl">Sits</div></div>',
+          '<span class="rm-funnel-arr">→</span>',
+          '<div class="rm-funnel-step"><div class="rm-funnel-val" id="rm-f-deals">13</div><div class="rm-funnel-lbl">Deals</div></div>',
+          '<span class="rm-funnel-arr">→</span>',
+          '<div class="rm-funnel-step"><div class="rm-funnel-val" id="rm-f-installs">11</div><div class="rm-funnel-lbl">Installs</div></div>',
+        '</div>',
+        '<button class="rm-cta-btn" onclick="rmGoTo(2)">Watch It Work →</button>',
+      '</div>',
+
+      // Screen 2
+      '<div class="rm-screen" id="rms-2" style="padding-top:20px;gap:10px;">',
+        '<div class="rm-scenario-tabs" id="rm-tabs">',
+          '<button class="rm-tab rm-tab-active" onclick="rmSwitchScenario(0)">📅 Books Appointment</button>',
+          '<button class="rm-tab" onclick="rmSwitchScenario(1)">🔁 Responds on 3rd Follow-up</button>',
+          '<button class="rm-tab" onclick="rmSwitchScenario(2)">⚡ Wants to Talk Now</button>',
+        '</div>',
+        '<div class="rm-scenario-label" id="rm-scenario-label">Standard reactivation — appointment booked</div>',
+        '<div class="rm-iphone">',
+          '<div class="rm-di"><div class="rm-di-cam"></div></div>',
+          '<div class="rm-sb"><span>9:41</span><div class="rm-sb-right"><div class="rm-sb-sig"><i></i><i></i><i></i><i></i></div><span style="font-size:11px;font-weight:700">5G</span><div class="rm-sb-batt"><div class="rm-sb-batt-fill"></div></div></div></div>',
+          '<div class="rm-msg-hdr"><div class="rm-msg-back">‹</div><div class="rm-msg-av">JM</div><div class="rm-msg-contact"><div class="rm-msg-name" id="rm-chat-name">John Mitchell</div><div class="rm-msg-sub">iMessage</div></div></div>',
+          '<div class="rm-chat" id="rm-chat"></div>',
+          '<div class="rm-inputbar"><div class="rm-inputbar-plus">+</div><div class="rm-inputbar-field">iMessage</div></div>',
+        '</div>',
+        '<div class="rm-sms-result" id="rm-sms-result"></div>',
+        '<button class="rm-cta-btn" id="rm-sms-next" onclick="rmGoTo(3)">What Happens Next →</button>',
+      '</div>',
+
+      // Screen 3
+      '<div class="rm-screen" id="rms-3">',
+        '<div class="rm-setter-badge">The Handoff</div>',
+        '<h2 class="rm-setter-title">Before Your Closer Knocks</h2>',
+        '<div class="rm-setter-steps" id="rm-setter-steps">',
+          '<div class="rm-setter-step"><div class="rm-setter-num">1</div><div><div class="rm-setter-step-title">SMS Books Appointment</div><div class="rm-setter-step-desc">AI conversation books the time and confirms with John.</div></div></div>',
+          '<div class="rm-setter-step"><div class="rm-setter-num">2</div><div><div class="rm-setter-step-title">Setter Notified</div><div class="rm-setter-step-desc">Your setter receives the appointment details instantly.</div></div></div>',
+          '<div class="rm-setter-step"><div class="rm-setter-num">3</div><div><div class="rm-setter-step-title">Setter Collects Bill</div><div class="rm-setter-step-desc">Setter calls John and collects the utility bill.</div></div></div>',
+          '<div class="rm-setter-step"><div class="rm-setter-num">4</div><div><div class="rm-setter-step-title">Confirmation Sent</div><div class="rm-setter-step-desc">John gets a confirmation text with his appointment details.</div></div></div>',
+        '</div>',
+        '<p class="rm-setter-line" id="rm-setter-line">By the time your closer knocks, John has been spoken to twice. He\'s expecting you.</p>',
+        '<button class="rm-cta-btn" id="rm-setter-next" onclick="rmGoTo(4)">See What the Closer Gets →</button>',
+      '</div>',
+
+      // Screen 4
+      '<div class="rm-screen" id="rms-4">',
+        '<div class="rm-closer-card" id="rm-closer-card">',
+          '<div class="rm-card-badge">● Appointment Ready</div>',
+          '<div class="rm-card-name">John Mitchell</div>',
+          '<div class="rm-card-addr">247 Maple Street</div>',
+          '<div class="rm-card-div"></div>',
+          '<div class="rm-check-list">',
+            '<div class="rm-check-item"><span class="rm-check-icon">✓</span><span class="rm-check-text">Appointment Confirmed</span></div>',
+            '<div class="rm-check-item"><span class="rm-check-icon">✓</span><span class="rm-check-text">Utility Bill Collected</span></div>',
+            '<div class="rm-check-item"><span class="rm-check-icon">✓</span><span class="rm-check-text">Setter Call Recording</span></div>',
+            '<div class="rm-check-item"><span class="rm-check-icon">✓</span><span class="rm-check-text">Conversation Notes</span></div>',
+            '<div class="rm-check-item"><span class="rm-check-icon">✓</span><span class="rm-check-text">Lead Source</span></div>',
+          '</div>',
+          '<div class="rm-card-div"></div>',
+          '<div><div class="rm-conf-label"><span>Show-up Confidence</span><span class="rm-conf-pct" id="rm-conf-pct">0%</span></div><div class="rm-conf-track"><div class="rm-conf-fill" id="rm-conf-fill"></div></div></div>',
+        '</div>',
+        '<button class="rm-cta-btn" onclick="rmGoTo(5)">This is why the show-up rate is 78% →</button>',
+      '</div>',
+
+      // Screen 5
+      '<div class="rm-screen" id="rms-5">',
+        '<div class="rm-big-number" id="rm-big-number">$0</div>',
+        '<p class="rm-big-line">Recoverable pipeline. Already paid for.</p>',
+        '<p class="rm-big-line"><strong>We collect it. You close.</strong></p>',
+        '<button class="rm-cta-btn" style="margin-top:40px;" onclick="rmClose();document.querySelectorAll(\'.cta-trigger\')[0].click()">Book Your Launch Call →</button>',
+      '</div>',
+
+    ].join('');
+
+    // ── INIT CALC ────────────────────────────────────────────
+    function rmCalc() {
+        var leads = parseFloat(document.getElementById('rm-leads').value) || 0;
+        var close = parseFloat(document.getElementById('rm-close').value) || 0;
+        var install = parseFloat(document.getElementById('rm-install').value) || 0;
+        var deal = parseFloat(document.getElementById('rm-deal').value) || 0;
+        var appts = leads * AI_BOOK, sits = appts * SHOWUP;
+        var deals = sits * (close/100), installs = deals * (install/100);
+        var result = installs * deal;
+        return { leads, appts: Math.round(appts), sits: Math.round(sits), deals: Math.round(deals), installs: Math.round(installs), result: isNaN(result)||!isFinite(result)?0:result };
+    }
+    function rmFmt(n) { return '$' + Math.max(0,Math.round(n)).toLocaleString('en-US'); }
+    function rmUpdateChain() {
+        var c = rmCalc();
+        document.getElementById('rm-f-leads').textContent = Math.round(c.leads).toLocaleString();
+        document.getElementById('rm-f-appts').textContent = c.appts.toLocaleString();
+        document.getElementById('rm-f-sits').textContent = c.sits.toLocaleString();
+        document.getElementById('rm-f-deals').textContent = c.deals.toLocaleString();
+        document.getElementById('rm-f-installs').textContent = c.installs.toLocaleString();
+        rmStored = c.result;
+        rmAnimNum(document.getElementById('rm-calc-amount'), rmStored);
+    }
+    function rmAnimNum(el, target) {
+        if (rmAnimId) cancelAnimationFrame(rmAnimId);
+        var cur = parseInt(el.textContent.replace(/[^0-9]/g,'')) || 0;
+        var diff = target - cur; if (Math.abs(diff) < 50) { el.textContent = rmFmt(target); return; }
+        var start = performance.now(), dur = 500;
+        function tick(now) { var p = Math.min((now-start)/dur,1), e = 1-Math.pow(1-p,3); el.textContent = rmFmt(cur+diff*e); if(p<1) rmAnimId=requestAnimationFrame(tick); else rmAnimId=null; }
+        rmAnimId = requestAnimationFrame(tick);
+    }
+    var c0 = rmCalc(); rmStored = c0.result;
+    document.getElementById('rm-calc-amount').textContent = rmFmt(rmStored);
+    document.getElementById('rm-f-leads').textContent = Math.round(c0.leads).toLocaleString();
+    document.getElementById('rm-f-appts').textContent = c0.appts.toLocaleString();
+    document.getElementById('rm-f-sits').textContent = c0.sits.toLocaleString();
+    document.getElementById('rm-f-deals').textContent = c0.deals.toLocaleString();
+    document.getElementById('rm-f-installs').textContent = c0.installs.toLocaleString();
+    ['rm-leads','rm-close','rm-install','rm-deal'].forEach(function(id) {
+        document.getElementById(id).addEventListener('input', function() { clearTimeout(rmCalcTimer); rmCalcTimer = setTimeout(rmUpdateChain, 80); });
+    });
+
+    // ── NAVIGATION ───────────────────────────────────────────
+    window.rmGoTo = function(n) {
+        if (n < 1 || n > 5 || n === rmCurrent) return;
+        document.getElementById('rms-'+rmCurrent).classList.remove('rm-active');
+        document.getElementById('rms-'+n).classList.add('rm-active');
+        rmCurrent = n;
+        document.getElementById('rm-app').scrollTop = 0;
+        document.querySelectorAll('.rm-dot').forEach(function(d,i){ d.classList.toggle('rm-active-dot', i===n-1); });
+        setTimeout(function(){ rmOnEnter(n); }, 150);
+    };
+    function rmOnEnter(n) {
+        if (n===2 && !rmSmsPlayed) { rmSmsPlayed=true; rmPlaySMS(); }
+        if (n===3 && !rmSetterPlayed) { rmSetterPlayed=true; rmAnimSetter(); }
+        if (n===4 && !rmCloserPlayed) { rmCloserPlayed=true; rmAnimCloser(); }
+        if (n===5 && !rm5Played) { rm5Played=true; rmAnim5(); }
+    }
+
+    // ── SMS ──────────────────────────────────────────────────
+    // ── SCENARIOS ────────────────────────────────────────────
+    var rmScenarios = [
+      {
+        label: 'Standard reactivation — appointment booked',
+        name: 'John Mitchell',
+        result: '✅ Appointment Booked · Thursday 2pm',
+        showNext: true,
+        notif: null,
+        convo: [
+          {s:'ai',   t:'Hey John, random question — did anything ever happen with that solar stuff, or did that just kind of get put on the back burner?'},
+          {s:'john', t:'Haha back burner honestly'},
+          {s:'ai',   t:'What\'s been the main thing that\'s kept you from doing anything about it?'},
+          {s:'john', t:'Just kept forgetting tbh'},
+          {s:'ai',   t:'Got it. So if you actually saw what your bill would look like — like a real number for your house — would that be something worth 20 minutes?'},
+          {s:'john', t:'Yeah probably'},
+          {s:'ai',   t:'Thursday at 2pm or Friday at 10am — which one\'s easier for you?'},
+          {s:'john', t:'Thursday works'},
+          {s:'ai',   t:'Done. You\'ll get a confirmation shortly. See you Thursday, John.'},
+        ]
+      },
+      {
+        label: 'Responds on 3rd follow-up — books',
+        name: 'Marcus T.',
+        result: '✅ Follow-up Worked · Appointment Booked',
+        showNext: true,
+        notif: null,
+        convo: [
+          {s:'ai',     t:'Hey Marcus — did anything ever come of that solar conversation, or did that just kind of fall through the cracks?'},
+          {s:'gap',    t:'— No reply. 48 hours pass. —'},
+          {s:'ai',     t:'Marcus — still something you wanted to look at, or did the timing just not work out?'},
+          {s:'gap',    t:'— No reply. 4 days pass. —'},
+          {s:'ai',     t:'Last one from me — did something change, or just hasn\'t been the right time?'},
+          {s:'marcus', t:'Honestly just bad timing. But yeah let\'s actually do this'},
+          {s:'ai',     t:'What\'s made now feel like the right time?'},
+          {s:'marcus', t:'Bill came in at $340 last month lol'},
+          {s:'ai',     t:'Yeah that\'ll do it. Tuesday at 11am or Wednesday at 3pm — which is easier?'},
+          {s:'gap',    t:'— No reply. 24 hours pass. —'},
+          {s:'ai',     t:'Marcus — Tuesday at 11 or Wednesday at 3, which one works?'},
+          {s:'marcus', t:'Tuesday sorry'},
+          {s:'ai',     t:'Locked in. See you Tuesday at 11, Marcus.'},
+        ]
+      },
+      {
+        label: 'Lead wants to talk right now — setter gets instant alert',
+        name: 'Derek S.',
+        result: '🔥 Live Transfer · Setter Notified Now',
+        showNext: true,
+        notif: {
+          icon: '🔔',
+          iconClass: 'amber',
+          title: 'Hot Lead — Call Now',
+          msg: 'Derek S. · 247 Oak Ave · "Can someone call me right now?" · Responded in 4 min',
+          time: 'Just now'
+        },
+        convo: [
+          {s:'ai',    t:'Hey Derek — did anything ever happen with that solar stuff, or did it just never really get off the ground?'},
+          {s:'derek', t:'Never got off the ground. Honestly can someone just call me right now?'},
+          {s:'ai',    t:'Absolutely — flagging you as priority right now. Someone from the team will be calling you in the next few minutes.'},
+          {s:'derek', t:'Perfect appreciate it'},
+          {s:'ai',    t:'On its way. 🙌'},
+        ]
+      }
+    ];
+
+    var rmCurrentScenario = 0;
+    var rmScenarioPlaying = false;
+
+    window.rmSwitchScenario = function(idx) {
+        if (rmScenarioPlaying || idx === rmCurrentScenario) return;
+        rmCurrentScenario = idx;
+        // Update tabs
+        document.querySelectorAll('.rm-tab').forEach(function(t,i){ t.classList.toggle('rm-tab-active', i===idx); });
+        // Update label
+        document.getElementById('rm-scenario-label').textContent = rmScenarios[idx].label;
+        // Update contact name
+        document.getElementById('rm-chat-name').textContent = rmScenarios[idx].name;
+        // Clear chat
+        var area = document.getElementById('rm-chat'); area.innerHTML = '';
+        // Reset result + next btn + notif
+        var res = document.getElementById('rm-sms-result'); res.classList.remove('visible'); res.textContent = '';
+        var nxt = document.getElementById('rm-sms-next'); nxt.style.opacity='0'; nxt.style.pointerEvents='none';
+        var old = document.getElementById('rm-notif-card'); if(old) old.remove();
+        // Play
+        rmPlayScenario(idx);
+    };
+
+    function rmWait(ms) { return new Promise(function(r){setTimeout(r,ms);}); }
+
+    function rmAddBubble(area, sender, text) {
+        // Gap line (timestamp/divider)
+        if (sender === 'gap') {
+            var g = document.createElement('div');
+            g.style.cssText = 'text-align:center;font-size:.62rem;color:#555;padding:6px 0;font-style:italic;letter-spacing:.04em;';
+            g.textContent = text; area.appendChild(g); area.scrollTop=area.scrollHeight; return;
+        }
+        var isOut = sender==='ai', w = document.createElement('div');
+        w.className = 'rm-msg '+(isOut?'rm-msg-out':'rm-msg-in');
+        var b = document.createElement('div'); b.className='rm-bubble'; b.textContent=text;
+        w.appendChild(b); area.appendChild(w); w.offsetHeight; w.classList.add('show'); area.scrollTop=area.scrollHeight;
+    }
+    function rmShowTyping(area, sender) {
+        var isOut = sender==='ai', w = document.createElement('div');
+        w.className='rm-msg '+(isOut?'rm-msg-out':'rm-msg-in');
+        var b=document.createElement('div'); b.className='rm-typing'; b.innerHTML='<i></i><i></i><i></i>';
+        w.appendChild(b); area.appendChild(w); w.offsetHeight; w.classList.add('show'); area.scrollTop=area.scrollHeight; return w;
+    }
+
+    async function rmPlayScenario(idx) {
+        rmScenarioPlaying = true;
+        var sc = rmScenarios[idx];
+        var area = document.getElementById('rm-chat');
+        await rmWait(400);
+        for (var i=0; i<sc.convo.length; i++) {
+            var m = sc.convo[i];
+            if (m.s === 'gap') {
+                await rmWait(300);
+                rmAddBubble(area, 'gap', m.t);
+                await rmWait(600);
+                continue;
+            }
+            var isAI = m.s === 'ai';
+            await rmWait(i===0 ? 200 : (isAI ? 700 : 1000));
+            var ind = rmShowTyping(area, m.s);
+            await rmWait(isAI ? 850 : 550);
+            ind.remove();
+            rmAddBubble(area, m.s, m.t);
+        }
+        // Show result
+        await rmWait(900);
+        var res = document.getElementById('rm-sms-result');
+        res.textContent = sc.result; res.classList.add('visible');
+        // Show notification card if scenario has one
+        if (sc.notif) {
+            await rmWait(400);
+            var n = sc.notif;
+            var card = document.createElement('div');
+            card.id = 'rm-notif-card'; card.className = 'rm-notif';
+            card.innerHTML = '<div class="rm-notif-icon '+n.iconClass+'">'+n.icon+'</div>'
+                +'<div class="rm-notif-body"><div class="rm-notif-title">'+n.title+'</div><div class="rm-notif-msg">'+n.msg+'</div><div class="rm-notif-time">'+n.time+'</div></div>';
+            document.getElementById('rm-sms-result').insertAdjacentElement('afterend', card);
+            card.offsetHeight; card.classList.add('visible');
+        }
+        // Show next button
+        if (sc.showNext) {
+            await rmWait(600);
+            var nxt = document.getElementById('rm-sms-next'); nxt.style.opacity='1'; nxt.style.pointerEvents='auto';
+        }
+        rmScenarioPlaying = false;
+    }
+
+    async function rmPlaySMS() {
+        rmCurrentScenario = 0;
+        await rmPlayScenario(0);
+    }
+
+    // ── SETTER ───────────────────────────────────────────────
+    function rmAnimSetter() {
+        document.querySelectorAll('.rm-setter-step').forEach(function(el,i){
+            setTimeout(function(){ el.style.opacity='1'; el.style.transform='translateY(0)'; }, 300+i*400);
+        });
+        setTimeout(function(){ document.getElementById('rm-setter-line').style.opacity='1'; }, 2100);
+        setTimeout(function(){ var b=document.getElementById('rm-setter-next'); b.style.opacity='1'; b.style.pointerEvents='auto'; }, 2500);
+    }
+
+    // ── CLOSER ───────────────────────────────────────────────
+    function rmAnimCloser() {
+        document.getElementById('rm-closer-card').classList.add('rm-animating');
+        setTimeout(function(){
+            var el=document.getElementById('rm-conf-pct'), start=performance.now(), dur=1000;
+            function tick(now){ var p=Math.min((now-start)/dur,1), e=1-Math.pow(1-p,3); el.textContent=Math.round(78*e)+'%'; if(p<1) requestAnimationFrame(tick); }
+            requestAnimationFrame(tick);
+        }, 1300);
+    }
+
+    // ── SCREEN 5 ─────────────────────────────────────────────
+    function rmAnim5() {
+        var el=document.getElementById('rm-big-number'), target=rmStored, start=performance.now(), dur=1600;
+        function tick(now){ var p=Math.min((now-start)/dur,1), e=1-Math.pow(1-p,3); el.textContent=rmFmt(target*e); if(p<1) requestAnimationFrame(tick); }
+        requestAnimationFrame(tick);
+    }
+
+    // ── OPEN / CLOSE ─────────────────────────────────────────
+    function rmOpen() { modal.style.display='flex'; document.body.style.overflow='hidden'; }
+    window.rmClose = function() { modal.style.display='none'; document.body.style.overflow=''; };
+
+    document.getElementById('rm-open-btn').addEventListener('click', rmOpen);
+    document.getElementById('rm-close').addEventListener('click', window.rmClose);
+    modal.addEventListener('click', function(e){ if(e.target===modal) window.rmClose(); });
+    document.addEventListener('keydown', function(e){ if(e.key==='Escape' && modal.style.display==='flex') window.rmClose(); });
+})();
+</script>
 
 <div class="lang-toggle" onclick="toggleLanguage()">
     <span class="lang-opt active" data-lang="en">EN</span>
