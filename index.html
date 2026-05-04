@@ -591,7 +591,7 @@
     <div class="hero-inner">
         <div class="hero-tag" data-i18n="hero.tag">For Solar Sales Organizations</div>
         <h1 data-i18n="hero.h1">Your CRM is sitting on <em>$500,000</em> you've already paid for.</h1>
-        <p class="hero-sub" data-i18n="hero.sub">Dead door knock lists. No-shows. Aged leads. Inbound calls at midnight nobody answered. Steve made $60K from door knocks alone in 30 days. <strong>That was one source. You have five.</strong> We build the system that works all of them, 24 hours a day. Done for you. Live in 14 days. <strong>Zero additional ad spend.</strong></p>
+        <p class="hero-sub" data-i18n="hero.sub">Dead door knock lists. No-shows. Aged leads. Inbound calls at midnight nobody answered. Steve made $60K from door knocks alone in 60 days. <strong>That was one source. You have five.</strong> We build the system that works all of them, 24 hours a day. Done for you. Live in 14 days. <strong>Zero additional ad spend.</strong></p>
         <div class="hero-cta-wrap">
             <button class="btn-main cta-trigger" data-i18n="hero.cta">
                 See How We Extract It
@@ -612,15 +612,26 @@
 
         <!-- STEVE HERO CARD -->
         <div class="steve-card reveal">
-            <!-- CANVA VIDEO EMBED -->
-            <div class="video-player-wrap" tabindex="-1" style="padding:0;min-height:unset;aspect-ratio:16/9;">
-                <div style="position:relative;width:100%;height:100%;padding-top:56.25%;">
-                    <iframe loading="lazy" style="position:absolute;width:100%;height:100%;top:0;left:0;border:none;padding:0;margin:0;border-radius:0;"
-                        src="https://www.canva.com/design/DAGrMtplBrs/F6kd7s0oLw8JoxdmUeBwIA/watch?embed"
-                        allowfullscreen="allowfullscreen" allow="fullscreen">
-                    </iframe>
+            <!-- VIDEO — click to open -->
+            <div class="video-player-wrap" tabindex="-1" style="padding:0;min-height:unset;aspect-ratio:16/9;cursor:pointer;position:relative;background:#0b0b0b;"
+                 onclick="window.open('https://www.canva.com/design/DAGrMtplBrs/F6kd7s0oLw8JoxdmUeBwIA/watch','_blank')">
+                <!-- Thumbnail overlay -->
+                <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(135deg,rgba(0,0,0,.65),rgba(11,11,11,.4));z-index:2;transition:background .3s;"
+                     onmouseover="this.style.background='linear-gradient(135deg,rgba(0,0,0,.5),rgba(11,11,11,.25))'"
+                     onmouseout="this.style.background='linear-gradient(135deg,rgba(0,0,0,.65),rgba(11,11,11,.4))'">
+                    <div style="width:76px;height:76px;border-radius:50%;background:rgba(200,132,45,.15);border:1.5px solid rgba(200,132,45,.6);display:flex;align-items:center;justify-content:center;transition:all .3s;backdrop-filter:blur(12px);box-shadow:0 0 40px rgba(200,132,45,.2);">
+                        <svg width="26" height="26" viewBox="0 0 24 24" fill="#fff" style="margin-left:4px"><polygon points="5,3 19,12 5,21"/></svg>
+                    </div>
+                    <div style="margin-top:14px;font-size:.72rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.5);">Watch Story</div>
                 </div>
-                <div class="video-nameplate">
+                <!-- Dark gradient bg with name/stats hint -->
+                <div style="position:absolute;inset:0;background:linear-gradient(180deg,#0d0d0d 0%,#1a1410 100%);z-index:0;display:flex;align-items:center;justify-content:center;">
+                    <div style="text-align:center;padding:24px;">
+                        <div style="font-family:'Playfair Display',Georgia,serif;font-size:clamp(2rem,5vw,3.5rem);font-weight:400;color:rgba(200,132,45,.15);line-height:1;">$60,000</div>
+                        <div style="font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.08);margin-top:8px;">Steve — UBH Solar</div>
+                    </div>
+                </div>
+                <div class="video-nameplate" style="z-index:3;">
                     <div class="video-nameplate-name" data-i18n="proof.videoName">Steve</div>
                     <div class="video-nameplate-role" data-i18n="proof.videoRole">UBH Solar &bull; Client</div>
                 </div>
@@ -628,7 +639,7 @@
 
             <!-- STATS SIDE -->
             <div class="steve-stats">
-                <div class="steve-eyebrow" data-i18n="proof.eyebrow">First 30 Days &bull; Door Knocks Only</div>
+                <div class="steve-eyebrow" data-i18n="proof.eyebrow">First 60 Days &bull; Door Knocks Only</div>
                 <div class="steve-amount"><sup>$</sup>60,000</div>
                 <p class="steve-source" data-i18n="proof.source">From one dead list his team had <strong>completely written off.</strong> Inbound, no-shows, and aged contacts still untouched.</p>
                 <div class="steve-pills">
@@ -638,7 +649,7 @@
                     </div>
                     <div class="steve-pill">
                         <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-                        <span data-i18n="proof.pill2">6 deals in 30 days — 4 more closed after</span>
+                        <span data-i18n="proof.pill2">6 deals in 60 days — 4 more closed after</span>
                     </div>
                     <div class="steve-pill">
                         <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
@@ -696,7 +707,7 @@
                 <div class="math-equals"></div>
                 <div class="math-result" data-i18n="math.result">60 appointments &times; your close rate &times; your deal size = <em>your number.</em></div>
             </div>
-            <p class="math-caption reveal reveal-d2" data-i18n="math.caption">Steve had 3,000 door knock contacts. The system booked 30 appointments. He closed 6 in the first 30 days — then closed 4 more from the same pipeline after. 10 total deals. $60,000. You have that many leads sitting in your CRM right now.</p>
+            <p class="math-caption reveal reveal-d2" data-i18n="math.caption">Steve had 3,000 door knock contacts. The system booked 30 appointments. He closed 6 in the first 60 days — then closed 4 more from the same pipeline after. 10 total deals. $60,000. You have that many leads sitting in your CRM right now.</p>
             <div class="reveal reveal-d3" style="margin-top:48px;text-align:center;">
                 <button id="rm-open-btn" style="display:inline-flex;align-items:center;gap:10px;padding:16px 38px;background:transparent;border:1px solid var(--whiskey);color:var(--whiskey);font-family:var(--sans);font-size:1rem;font-weight:500;letter-spacing:.04em;border-radius:6px;cursor:pointer;transition:all .3s;" onmouseover="this.style.background='rgba(200,132,45,.1)';this.style.transform='translateY(-2px)'" onmouseout="this.style.background='transparent';this.style.transform='translateY(0)'">
                     Calculate Your Number
@@ -1768,32 +1779,353 @@
 
     // BOOKING MODAL
     (function(){
-        // Create modal
+        const BOOKING_URL = 'https://api.leadconnectorhq.com/widget/booking/kBieJ7GYlLvy0Xafgsh0';
+        const GHL_API_KEY  = 'pit-dadb099c-6911-419b-bfcf-84ab4ee29edd';
+        const GHL_LOCATION = '8w0u6rqmMplZQ8KvLtvw';
+        const FIELD_KEYS = {
+            market:      'what_state_or_market_are_you_ope',
+            leads:       'how_many_leads_are_you_generati',
+            independent: 'do_you_run_your_own_independent',
+            revenue:     'whats_your_current_monthly_reven',
+        };
+
+        // ── BUILD MODAL ──────────────────────────────────────────────────────────
+        const style = document.createElement('style');
+        style.textContent = `
+            #qualify-modal{display:none;position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);align-items:flex-start;justify-content:center;padding:20px;overflow-y:auto;}
+            #qualify-modal.open{display:flex;}
+            .qm-wrap{position:relative;width:100%;max-width:600px;margin:auto;background:#111;border:1px solid #262626;border-radius:16px;padding:40px 36px 44px;}
+            @media(max-width:600px){.qm-wrap{padding:28px 20px 36px;}}
+            .qm-close{position:absolute;top:16px;right:20px;background:none;border:none;cursor:pointer;color:#6b6b6b;font-size:1.5rem;line-height:1;transition:color .2s;}
+            .qm-close:hover{color:#fff;}
+            .qm-tag{display:inline-flex;align-items:center;gap:8px;font-size:.75rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#c8842d;margin-bottom:18px;}
+            .qm-tag::before,.qm-tag::after{content:'';width:14px;height:1px;background:#c8842d;opacity:.5;}
+            .qm-headline{font-family:'Playfair Display',Georgia,serif;font-size:clamp(1.5rem,3.5vw,2.1rem);font-weight:400;line-height:1.15;color:#fff;margin-bottom:8px;}
+            .qm-headline em{font-style:italic;color:#d9963e;}
+            .qm-sub{font-size:.9rem;color:#999;font-weight:300;margin-bottom:28px;line-height:1.7;}
+            .qm-progress{height:2px;background:#262626;border-radius:2px;margin-bottom:32px;overflow:hidden;}
+            .qm-progress-fill{height:100%;background:#c8842d;border-radius:2px;transition:width .4s ease;width:0%;}
+            .qm-step{display:none;}
+            .qm-step.active{display:block;animation:qmFadeUp .35s ease;}
+            @keyframes qmFadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+            .qm-step-num{font-size:.72rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:#6b6b6b;margin-bottom:8px;}
+            .qm-question{font-family:'Playfair Display',Georgia,serif;font-size:clamp(1.05rem,2.5vw,1.35rem);font-weight:400;color:#fff;line-height:1.35;margin-bottom:22px;}
+            .qm-select{width:100%;background:#1a1a1a;border:1px solid #262626;border-radius:8px;color:#fff;font-family:'DM Sans',sans-serif;font-size:.95rem;font-weight:300;padding:13px 40px 13px 16px;outline:none;appearance:none;cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b6b6b' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;transition:border-color .2s,box-shadow .2s;}
+            .qm-select:focus{border-color:#c8842d;box-shadow:0 0 0 3px rgba(200,132,45,.12);}
+            .qm-select option{background:#1a1a1a;}
+            .qm-textarea{width:100%;background:#1a1a1a;border:1px solid #262626;border-radius:8px;color:#fff;font-family:'DM Sans',sans-serif;font-size:.95rem;font-weight:300;padding:13px 16px;outline:none;resize:vertical;min-height:90px;line-height:1.6;transition:border-color .2s,box-shadow .2s;}
+            .qm-textarea:focus{border-color:#c8842d;box-shadow:0 0 0 3px rgba(200,132,45,.12);}
+            .qm-radio-group{display:flex;flex-direction:column;gap:9px;}
+            .qm-radio-opt{display:flex;align-items:center;gap:12px;background:#1a1a1a;border:1px solid #262626;border-radius:8px;padding:12px 16px;cursor:pointer;transition:border-color .2s,background .2s;user-select:none;}
+            .qm-radio-opt:hover{border-color:#3a3a3a;}
+            .qm-radio-opt.selected{border-color:#c8842d;background:rgba(200,132,45,.07);}
+            .qm-radio-opt input{display:none;}
+            .qm-dot{width:17px;height:17px;border-radius:50%;border:1.5px solid #6b6b6b;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:border-color .2s;}
+            .qm-radio-opt.selected .qm-dot{border-color:#c8842d;background:#c8842d;}
+            .qm-radio-opt.selected .qm-dot::after{content:'';width:5px;height:5px;border-radius:50%;background:#fff;}
+            .qm-radio-label{font-size:.9rem;color:#bbb;font-weight:300;}
+            .qm-radio-opt.selected .qm-radio-label{color:#fff;}
+            .qm-error{font-size:.78rem;color:#e07070;margin-top:6px;display:none;}
+            .qm-error.show{display:block;}
+            .qm-btn-row{display:flex;align-items:center;gap:20px;margin-top:24px;flex-wrap:wrap;}
+            .qm-btn-next{display:inline-flex;align-items:center;gap:8px;background:#c8842d;color:#fff;font-family:'DM Sans',sans-serif;font-size:.95rem;font-weight:500;padding:13px 30px;border:none;border-radius:6px;cursor:pointer;transition:background .2s,transform .15s;letter-spacing:.01em;}
+            .qm-btn-next:hover{background:#d9963e;transform:translateY(-1px);}
+            .qm-btn-next:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+            .qm-btn-back{background:none;border:none;color:#6b6b6b;font-family:'DM Sans',sans-serif;font-size:.88rem;cursor:pointer;padding:0;transition:color .2s;}
+            .qm-btn-back:hover{color:#bbb;}
+            .qm-disqualify,.qm-success{display:none;text-align:center;padding:16px 0;}
+            .qm-disqualify.show,.qm-success.show{display:block;animation:qmFadeUp .4s ease;}
+            .qm-disqualify h3,.qm-success h3{font-family:'Playfair Display',Georgia,serif;font-size:1.5rem;color:#fff;margin-bottom:10px;}
+            .qm-disqualify p,.qm-success p{font-size:.9rem;color:#999;font-weight:300;line-height:1.7;margin-bottom:24px;}
+            .qm-success-icon{width:56px;height:56px;border-radius:50%;background:rgba(200,132,45,.1);border:1.5px solid rgba(200,132,45,.35);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;}
+            .qm-spinner{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:qmSpin .7s linear infinite;}
+            @keyframes qmSpin{to{transform:rotate(360deg)}}
+        `;
+        document.head.appendChild(style);
+
         const modal = document.createElement('div');
-        modal.id = 'booking-modal';
-        modal.style.cssText = 'display:none;position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,.85);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);align-items:center;justify-content:center;padding:20px;';
+        modal.id = 'qualify-modal';
         modal.innerHTML = `
-            <div style="position:relative;width:100%;max-width:780px;max-height:90vh;background:#111;border:1px solid #262626;border-radius:16px;overflow:hidden;display:flex;flex-direction:column;">
-                <div style="display:flex;align-items:center;justify-content:space-between;padding:18px 24px;border-bottom:1px solid #262626;flex-shrink:0;">
-                    <span style="font-family:'DM Sans',sans-serif;font-size:.8rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:#c8842d;">Book a Conversation</span>
-                    <button id="booking-close" style="background:none;border:none;cursor:pointer;color:#6b6b6b;font-size:1.4rem;line-height:1;padding:4px 8px;transition:color .2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#6b6b6b'">&times;</button>
+        <div class="qm-wrap">
+            <button class="qm-close" id="qm-close-btn">&times;</button>
+
+            <div id="qm-header">
+                <div class="qm-tag">Quick Application</div>
+                <h2 class="qm-headline">Before we talk — <em>two minutes.</em></h2>
+                <p class="qm-sub">We work with a small number of operators each quarter. Four quick questions to make sure we're a fit.</p>
+                <div class="qm-progress"><div class="qm-progress-fill" id="qm-progress"></div></div>
+            </div>
+
+            <!-- Q1: Market -->
+            <div class="qm-step active" id="qm-step-1">
+                <div class="qm-step-num">Question 1 of 4</div>
+                <div class="qm-question">What state or market are you operating in?</div>
+                <select class="qm-select" id="qm_market">
+                    <option value="" disabled selected>Select your primary market</option>
+                    <option>Florida</option>
+                    <option>Texas</option>
+                    <option>California</option>
+                    <option>Arizona</option>
+                    <option>Puerto Rico</option>
+                    <option>Other US Market</option>
+                </select>
+                <div class="qm-error" id="qm-err-market">Please select a market</div>
+                <div class="qm-btn-row">
+                    <button class="qm-btn-next" onclick="qmGoTo(2)">Continue →</button>
                 </div>
-                <div style="flex:1;overflow:auto;min-height:600px;">
-                    <iframe src="https://api.leadconnectorhq.com/widget/booking/kBieJ7GYlLvy0Xafgsh0" style="width:100%;height:100%;min-height:600px;border:none;" loading="lazy"></iframe>
+            </div>
+
+            <!-- Q2: Leads -->
+            <div class="qm-step" id="qm-step-2">
+                <div class="qm-step-num">Question 2 of 4</div>
+                <div class="qm-question">How many leads are you generating per month, and what does your current follow-up process look like?</div>
+                <textarea class="qm-textarea" id="qm_leads" placeholder="e.g. ~200 leads/month from Facebook ads, follow up manually by phone for 2-3 days then they go cold..."></textarea>
+                <div class="qm-error" id="qm-err-leads">Please answer this question</div>
+                <div class="qm-btn-row">
+                    <button class="qm-btn-next" onclick="qmGoTo(3)">Continue →</button>
+                    <button class="qm-btn-back" onclick="qmGoTo(1)">← Back</button>
                 </div>
-            </div>`;
+            </div>
+
+            <!-- Q3: Independent -->
+            <div class="qm-step" id="qm-step-3">
+                <div class="qm-step-num">Question 3 of 4</div>
+                <div class="qm-question">Do you run your own independent solar operation, or are you part of an organization like Powur?</div>
+                <div class="qm-radio-group">
+                    <label class="qm-radio-opt" onclick="qmSelectRadio(this,'qm_independent','Independent — I own my leads and customer relationships')">
+                        <input type="radio" name="qm_independent" value="Independent — I own my leads and customer relationships"/>
+                        <div class="qm-dot"></div>
+                        <span class="qm-radio-label">Independent — I own my leads and customer relationships</span>
+                    </label>
+                    <label class="qm-radio-opt" onclick="qmSelectRadio(this,'qm_independent','Part of an org like Powur — leads/customers flow through them')">
+                        <input type="radio" name="qm_independent" value="Part of an org like Powur — leads/customers flow through them"/>
+                        <div class="qm-dot"></div>
+                        <span class="qm-radio-label">Part of an org like Powur — leads/customers flow through them</span>
+                    </label>
+                    <label class="qm-radio-opt" onclick="qmSelectRadio(this,'qm_independent','Both — I have independent volume alongside org work')">
+                        <input type="radio" name="qm_independent" value="Both — I have independent volume alongside org work"/>
+                        <div class="qm-dot"></div>
+                        <span class="qm-radio-label">Both — I have independent volume alongside org work</span>
+                    </label>
+                </div>
+                <div class="qm-error" id="qm-err-independent">Please select an option</div>
+                <div class="qm-btn-row">
+                    <button class="qm-btn-next" onclick="qmGoTo(4)">Continue →</button>
+                    <button class="qm-btn-back" onclick="qmGoTo(2)">← Back</button>
+                </div>
+            </div>
+
+            <!-- Q4: Revenue -->
+            <div class="qm-step" id="qm-step-4">
+                <div class="qm-step-num">Question 4 of 4</div>
+                <div class="qm-question">What's your current monthly revenue or deal volume?</div>
+                <div class="qm-radio-group">
+                    <label class="qm-radio-opt" onclick="qmSelectRadio(this,'qm_revenue','Under $10K/month')">
+                        <input type="radio" name="qm_revenue" value="Under $10K/month"/>
+                        <div class="qm-dot"></div>
+                        <span class="qm-radio-label">Under $10K/month</span>
+                    </label>
+                    <label class="qm-radio-opt" onclick="qmSelectRadio(this,'qm_revenue','$10K–$30K/month')">
+                        <input type="radio" name="qm_revenue" value="$10K–$30K/month"/>
+                        <div class="qm-dot"></div>
+                        <span class="qm-radio-label">$10K–$30K/month</span>
+                    </label>
+                    <label class="qm-radio-opt" onclick="qmSelectRadio(this,'qm_revenue','$30K–$100K/month')">
+                        <input type="radio" name="qm_revenue" value="$30K–$100K/month"/>
+                        <div class="qm-dot"></div>
+                        <span class="qm-radio-label">$30K–$100K/month</span>
+                    </label>
+                    <label class="qm-radio-opt" onclick="qmSelectRadio(this,'qm_revenue','$100K+/month')">
+                        <input type="radio" name="qm_revenue" value="$100K+/month"/>
+                        <div class="qm-dot"></div>
+                        <span class="qm-radio-label">$100K+/month</span>
+                    </label>
+                </div>
+                <div class="qm-error" id="qm-err-revenue">Please select an option</div>
+                <div class="qm-btn-row">
+                    <button class="qm-btn-next" id="qm-submit-btn" onclick="qmSubmit()">See If You Qualify →</button>
+                    <button class="qm-btn-back" onclick="qmGoTo(3)">← Back</button>
+                </div>
+            </div>
+
+            <!-- DISQUALIFIED -->
+            <div class="qm-disqualify" id="qm-disqualify">
+                <h3>Not quite the right fit — yet.</h3>
+                <p>We work best with operators who control their own leads and customer relationships. If your situation changes or you have independent volume outside your org, reach out at <a href="mailto:info@solaropsmafia.com" style="color:#c8842d">info@solaropsmafia.com</a>.</p>
+            </div>
+
+            <!-- SUCCESS -->
+            <div class="qm-success" id="qm-success">
+                <div class="qm-success-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#c8842d" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                </div>
+                <h3>You're in. <em style="font-style:italic;color:#d9963e">Let's talk.</em></h3>
+                <p>Your answers are saved. Book your call below — we'll review what you shared before we get on.</p>
+                <button class="qm-btn-next" onclick="window.open('${BOOKING_URL}','_blank')" style="margin:0 auto">Book Your Call →</button>
+            </div>
+        </div>`;
         document.body.appendChild(modal);
 
-        function openModal(){ modal.style.display = 'flex'; document.body.style.overflow = 'hidden'; }
-        function closeModal(){ modal.style.display = 'none'; document.body.style.overflow = ''; }
+        // ── MODAL OPEN/CLOSE ─────────────────────────────────────────────────────
+        function openModal() {
+            modal.classList.add('open');
+            document.body.style.overflow = 'hidden';
+            qmReset();
+        }
+        function closeModal() {
+            modal.classList.remove('open');
+            document.body.style.overflow = '';
+        }
 
-        document.getElementById('booking-close').addEventListener('click', closeModal);
+        document.getElementById('qm-close-btn').addEventListener('click', closeModal);
         modal.addEventListener('click', function(e){ if(e.target === modal) closeModal(); });
         document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeModal(); });
+        document.querySelectorAll('.cta-trigger').forEach(btn => btn.addEventListener('click', openModal));
 
-        document.querySelectorAll('.cta-trigger').forEach(btn => {
-            btn.addEventListener('click', openModal);
-        });
+        // ── STATE ────────────────────────────────────────────────────────────────
+        let qmStep = 1;
+        const QM_TOTAL = 4;
+
+        function qmReset() {
+            qmStep = 1;
+            document.querySelectorAll('.qm-step').forEach(s => s.classList.remove('active'));
+            document.getElementById('qm-step-1').classList.add('active');
+            document.getElementById('qm-progress').style.width = '0%';
+            document.getElementById('qm-header').style.display = '';
+            document.getElementById('qm-disqualify').classList.remove('show');
+            document.getElementById('qm-success').classList.remove('show');
+            document.getElementById('qm_market').value = '';
+            document.getElementById('qm_leads').value = '';
+            document.querySelectorAll('.qm-radio-opt').forEach(o => o.classList.remove('selected'));
+            document.querySelectorAll('input[type=radio]').forEach(r => r.checked = false);
+            document.querySelectorAll('.qm-error').forEach(e => e.classList.remove('show'));
+            const btn = document.getElementById('qm-submit-btn');
+            if(btn){ btn.disabled = false; btn.innerHTML = 'See If You Qualify →'; }
+        }
+
+        // ── NAVIGATION ───────────────────────────────────────────────────────────
+        window.qmGoTo = function(step) {
+            if(step > qmStep && !qmValidate(qmStep)) return;
+
+            // Disqualify on Powur-only at step 3 → going to 4
+            if(step === 4) {
+                const val = qmGetRadio('qm_independent');
+                if(val === 'Part of an org like Powur — leads/customers flow through them') {
+                    qmDisqualify();
+                    return;
+                }
+            }
+
+            document.getElementById('qm-step-' + qmStep).classList.remove('active');
+            qmStep = step;
+            document.getElementById('qm-step-' + qmStep).classList.add('active');
+            document.getElementById('qm-progress').style.width = (((qmStep - 1) / QM_TOTAL) * 100) + '%';
+            modal.scrollTop = 0;
+        };
+
+        // ── VALIDATION ───────────────────────────────────────────────────────────
+        function qmValidate(step) {
+            if(step === 1) {
+                const v = document.getElementById('qm_market').value;
+                if(!v){ qmErr('market', true); return false; }
+                qmErr('market', false);
+            }
+            if(step === 2) {
+                const v = document.getElementById('qm_leads').value.trim();
+                if(!v){ qmErr('leads', true); return false; }
+                qmErr('leads', false);
+            }
+            if(step === 3) {
+                const v = qmGetRadio('qm_independent');
+                if(!v){ qmErr('independent', true); return false; }
+                qmErr('independent', false);
+            }
+            if(step === 4) {
+                const v = qmGetRadio('qm_revenue');
+                if(!v){ qmErr('revenue', true); return false; }
+                qmErr('revenue', false);
+            }
+            return true;
+        }
+
+        function qmErr(key, show) {
+            const el = document.getElementById('qm-err-' + key);
+            if(el) el.classList.toggle('show', show);
+        }
+
+        // ── RADIO ────────────────────────────────────────────────────────────────
+        window.qmSelectRadio = function(label, name, value) {
+            document.querySelectorAll('input[name="' + name + '"]').forEach(r => {
+                r.closest('.qm-radio-opt').classList.remove('selected');
+            });
+            label.classList.add('selected');
+            label.querySelector('input').checked = true;
+            qmErr(name.replace('qm_',''), false);
+        };
+
+        function qmGetRadio(name) {
+            const checked = document.querySelector('input[name="' + name + '"]:checked');
+            return checked ? checked.value : '';
+        }
+
+        // ── SUBMIT ───────────────────────────────────────────────────────────────
+        window.qmSubmit = async function() {
+            if(!qmValidate(4)) return;
+
+            const btn = document.getElementById('qm-submit-btn');
+            btn.disabled = true;
+            btn.innerHTML = '<span class="qm-spinner"></span> Submitting...';
+
+            const payload = {
+                locationId: GHL_LOCATION,
+                customFields: [
+                    { key: FIELD_KEYS.market,      field_value: document.getElementById('qm_market').value },
+                    { key: FIELD_KEYS.leads,        field_value: document.getElementById('qm_leads').value.trim() },
+                    { key: FIELD_KEYS.independent,  field_value: qmGetRadio('qm_independent') },
+                    { key: FIELD_KEYS.revenue,      field_value: qmGetRadio('qm_revenue') },
+                ]
+            };
+
+            try {
+                await fetch('https://rest.gohighlevel.com/v1/contacts/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + GHL_API_KEY },
+                    body: JSON.stringify(payload)
+                });
+            } catch(e) { console.error(e); }
+
+            qmShowSuccess();
+        };
+
+        async function qmDisqualify() {
+            const payload = {
+                locationId: GHL_LOCATION,
+                tags: ['disqualified', 'powur-rep'],
+                customFields: [
+                    { key: FIELD_KEYS.market,      field_value: document.getElementById('qm_market').value },
+                    { key: FIELD_KEYS.leads,        field_value: document.getElementById('qm_leads').value.trim() },
+                    { key: FIELD_KEYS.independent,  field_value: qmGetRadio('qm_independent') },
+                ]
+            };
+            try {
+                await fetch('https://rest.gohighlevel.com/v1/contacts/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + GHL_API_KEY },
+                    body: JSON.stringify(payload)
+                });
+            } catch(e) { console.error(e); }
+
+            document.querySelectorAll('.qm-step').forEach(s => s.classList.remove('active'));
+            document.getElementById('qm-header').style.display = 'none';
+            document.getElementById('qm-disqualify').classList.add('show');
+        }
+
+        function qmShowSuccess() {
+            document.querySelectorAll('.qm-step').forEach(s => s.classList.remove('active'));
+            document.getElementById('qm-header').style.display = 'none';
+            document.getElementById('qm-success').classList.add('show');
+        }
+
     })();
 
     // PARTICLE FIELD + ROCKET ANIMATION
