@@ -1779,12 +1779,7 @@
         const BOOKING_URL = 'https://api.leadconnectorhq.com/widget/booking/FZEEAdwf4gHo1R16LgVs';
         const GHL_API_KEY  = 'pit-dadb099c-6911-419b-bfcf-84ab4ee29edd';
         const GHL_LOCATION = '8w0u6rqmMplZQ8KvLtvw';
-        const FIELD_KEYS = {
-            deals:       'how_many_deals_are_you_closing_per_month_right_now',
-            crm_leads:   'how_many_leads_do_you_currently_have_in_your_crm',
-            lead_source: 'where_are_your_leads_coming_from_d2d_facebook_referrals',
-            book_reason: 'what_made_you_decide_to_book_today',
-        };
+
 
         // ── BUILD MODAL ──────────────────────────────────────────────────────────
         const style = document.createElement('style');
@@ -1848,70 +1843,23 @@
 
             <div id="qm-header">
                 <div class="qm-tag">Quick Application</div>
-                <h2 class="qm-headline">Before we talk — <em>two minutes.</em></h2>
-                <p class="qm-sub">We work with a small number of operators each quarter. A few quick questions to make sure we're a fit.</p>
-                <div class="qm-progress"><div class="qm-progress-fill" id="qm-progress"></div></div>
+                <h2 class="qm-headline">Book a <em>strategy call.</em></h2>
+                <p class="qm-sub">We work with a small number of operators each quarter. Drop your info and pick a time.</p>
+
             </div>
 
             <!-- Q0: Name + Email -->
             <div class="qm-step active" id="qm-step-1">
-                <div class="qm-step-num">Your Info</div>
+
                 <div class="qm-question">First, who are we talking to?</div>
                 <input class="qm-textarea" id="qm_name" type="text" placeholder="Your full name" style="min-height:unset;height:48px;resize:none;margin-bottom:12px;" />
                 <input class="qm-textarea" id="qm_email" type="email" placeholder="Your email address" style="min-height:unset;height:48px;resize:none;" />
                 <div class="qm-error" id="qm-err-name">Please enter your name and a valid email</div>
                 <div class="qm-btn-row">
-                    <button class="qm-btn-next" onclick="qmGoTo(2)">Continue →</button>
-                </div>
-            </div>
-
-            <!-- Q1: Deals closing -->
-            <div class="qm-step" id="qm-step-2">
-                <div class="qm-step-num">Question 1 of 4</div>
-                <div class="qm-question">How many deals are you closing per month right now?</div>
-                <textarea class="qm-textarea" id="qm_deals" placeholder="e.g. 8-10 deals/month"></textarea>
-                <div class="qm-error" id="qm-err-deals">Please answer this question</div>
-                <div class="qm-btn-row">
-                    <button class="qm-btn-next" onclick="qmGoTo(3)">Continue →</button>
-                    <button class="qm-btn-back" onclick="qmGoTo(1)">← Back</button>
-                </div>
-            </div>
-
-            <!-- Q2: Leads in CRM -->
-            <div class="qm-step" id="qm-step-3">
-                <div class="qm-step-num">Question 2 of 4</div>
-                <div class="qm-question">How many leads do you currently have in your CRM?</div>
-                <textarea class="qm-textarea" id="qm_crm_leads" placeholder="e.g. ~2,500 leads, mix of old door knocks and Facebook ads"></textarea>
-                <div class="qm-error" id="qm-err-crm_leads">Please answer this question</div>
-                <div class="qm-btn-row">
-                    <button class="qm-btn-next" onclick="qmGoTo(4)">Continue →</button>
-                    <button class="qm-btn-back" onclick="qmGoTo(2)">← Back</button>
-                </div>
-            </div>
-
-            <!-- Q3: Lead Source -->
-            <div class="qm-step" id="qm-step-4">
-                <div class="qm-step-num">Question 3 of 4</div>
-                <div class="qm-question">Where are your leads coming from? (D2D, Facebook, Referrals...)</div>
-                <textarea class="qm-textarea" id="qm_lead_source" placeholder="e.g. Mostly Facebook ads + some door-to-door, a few referrals"></textarea>
-                <div class="qm-error" id="qm-err-lead_source">Please answer this question</div>
-                <div class="qm-btn-row">
-                    <button class="qm-btn-next" onclick="qmGoTo(5)">Continue →</button>
-                    <button class="qm-btn-back" onclick="qmGoTo(3)">← Back</button>
-                </div>
-            </div>
-
-            <!-- Q4: Book reason -->
-            <div class="qm-step" id="qm-step-5">
-                <div class="qm-step-num">Question 4 of 4</div>
-                <div class="qm-question">What made you decide to book today?</div>
-                <textarea class="qm-textarea" id="qm_book_reason" placeholder="e.g. Saw the video, tired of losing leads to slow follow-up..."></textarea>
-                <div class="qm-error" id="qm-err-book_reason">Please answer this question</div>
-                <div class="qm-btn-row">
                     <button class="qm-btn-next" id="qm-submit-btn" onclick="qmSubmit()">Book My Call →</button>
-                    <button class="qm-btn-back" onclick="qmGoTo(4)">← Back</button>
                 </div>
             </div>
+
 
             <!-- DISQUALIFIED -->
             <div class="qm-disqualify" id="qm-disqualify">
@@ -1953,7 +1901,7 @@
 
         // ── STATE ────────────────────────────────────────────────────────────────
         let qmStep = 1;
-        const QM_TOTAL = 5;
+        const QM_TOTAL = 1;
 
         function qmReset() {
             qmStep = 1;
@@ -1963,7 +1911,7 @@
             document.getElementById('qm-header').style.display = '';
             document.getElementById('qm-disqualify').classList.remove('show');
             document.getElementById('qm-success').classList.remove('show');
-            ['qm_name','qm_email','qm_deals','qm_crm_leads','qm_lead_source','qm_book_reason'].forEach(id => {
+            ['qm_name','qm_email'].forEach(id => {
                 const el = document.getElementById(id);
                 if(el) el.value = '';
             });
@@ -1992,26 +1940,6 @@
                 if(!name || !emailOk){ qmErr('name', true); return false; }
                 qmErr('name', false);
             }
-            if(step === 2) {
-                const v = document.getElementById('qm_deals').value.trim();
-                if(!v){ qmErr('deals', true); return false; }
-                qmErr('deals', false);
-            }
-            if(step === 3) {
-                const v = document.getElementById('qm_crm_leads').value.trim();
-                if(!v){ qmErr('crm_leads', true); return false; }
-                qmErr('crm_leads', false);
-            }
-            if(step === 4) {
-                const v = document.getElementById('qm_lead_source').value.trim();
-                if(!v){ qmErr('lead_source', true); return false; }
-                qmErr('lead_source', false);
-            }
-            if(step === 5) {
-                const v = document.getElementById('qm_book_reason').value.trim();
-                if(!v){ qmErr('book_reason', true); return false; }
-                qmErr('book_reason', false);
-            }
             return true;
         }
 
@@ -2037,7 +1965,7 @@
 
         // ── SUBMIT ───────────────────────────────────────────────────────────────
         window.qmSubmit = async function() {
-            if(!qmValidate(5)) return;
+            if(!qmValidate(1)) return;
 
             const btn = document.getElementById('qm-submit-btn');
             btn.disabled = true;
@@ -2054,22 +1982,20 @@
                 email:      document.getElementById('qm_email').value.trim(),
                 locationId: GHL_LOCATION,
                 tags:       ['landing-page-qualified'],
-                customFields: [
-                    { key: FIELD_KEYS.deals,       field_value: document.getElementById('qm_deals').value.trim() },
-                    { key: FIELD_KEYS.crm_leads,   field_value: document.getElementById('qm_crm_leads').value.trim() },
-                    { key: FIELD_KEYS.lead_source, field_value: document.getElementById('qm_lead_source').value.trim() },
-                    { key: FIELD_KEYS.book_reason, field_value: document.getElementById('qm_book_reason').value.trim() },
-                ]
             };
 
             try {
-                const res = await fetch('https://rest.gohighlevel.com/v1/contacts/', {
+                const res = await fetch('https://services.leadconnectorhq.com/contacts/upsert', {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + GHL_API_KEY },
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + GHL_API_KEY,
+                        'Version': '2021-07-28'
+                    },
                     body: JSON.stringify(payload)
                 });
                 const data = await res.json();
-                console.log('GHL response:', res.status, data);
+                console.log('GHL upsert:', res.status, data);
             } catch(e) { console.error('GHL error:', e); }
 
             qmShowSuccess();
