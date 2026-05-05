@@ -1780,10 +1780,10 @@
         const GHL_API_KEY  = 'pit-dadb099c-6911-419b-bfcf-84ab4ee29edd';
         const GHL_LOCATION = '8w0u6rqmMplZQ8KvLtvw';
         const FIELD_KEYS = {
-            market:      'what_state_or_market_are_you_ope',
-            leads:       'how_many_leads_are_you_generati',
-            independent: 'do_you_run_your_own_independent',
-            revenue:     'whats_your_current_monthly_reven',
+            deals:       'how_many_deals_are_you_closing_per_month_right_now',
+            crm_leads:   'how_many_leads_do_you_currently_have_in_your_crm',
+            lead_source: 'where_are_your_leads_coming_from_d2d_facebook_referrals',
+            book_reason: 'what_made_you_decide_to_book_today',
         };
 
         // ── BUILD MODAL ──────────────────────────────────────────────────────────
@@ -1849,99 +1849,67 @@
             <div id="qm-header">
                 <div class="qm-tag">Quick Application</div>
                 <h2 class="qm-headline">Before we talk — <em>two minutes.</em></h2>
-                <p class="qm-sub">We work with a small number of operators each quarter. Four quick questions to make sure we're a fit.</p>
+                <p class="qm-sub">We work with a small number of operators each quarter. A few quick questions to make sure we're a fit.</p>
                 <div class="qm-progress"><div class="qm-progress-fill" id="qm-progress"></div></div>
             </div>
 
-            <!-- Q1: Market -->
+            <!-- Q0: Name + Email -->
             <div class="qm-step active" id="qm-step-1">
-                <div class="qm-step-num">Question 1 of 4</div>
-                <div class="qm-question">What state or market are you operating in?</div>
-                <select class="qm-select" id="qm_market">
-                    <option value="" disabled selected>Select your primary market</option>
-                    <option>Florida</option>
-                    <option>Texas</option>
-                    <option>California</option>
-                    <option>Arizona</option>
-                    <option>Puerto Rico</option>
-                    <option>Other US Market</option>
-                </select>
-                <div class="qm-error" id="qm-err-market">Please select a market</div>
+                <div class="qm-step-num">Your Info</div>
+                <div class="qm-question">First, who are we talking to?</div>
+                <input class="qm-textarea" id="qm_name" type="text" placeholder="Your full name" style="min-height:unset;height:48px;resize:none;margin-bottom:12px;" />
+                <input class="qm-textarea" id="qm_email" type="email" placeholder="Your email address" style="min-height:unset;height:48px;resize:none;" />
+                <div class="qm-error" id="qm-err-name">Please enter your name and a valid email</div>
                 <div class="qm-btn-row">
                     <button class="qm-btn-next" onclick="qmGoTo(2)">Continue →</button>
                 </div>
             </div>
 
-            <!-- Q2: Leads -->
+            <!-- Q1: Deals closing -->
             <div class="qm-step" id="qm-step-2">
-                <div class="qm-step-num">Question 2 of 4</div>
-                <div class="qm-question">How many leads are you generating per month, and what does your current follow-up process look like?</div>
-                <textarea class="qm-textarea" id="qm_leads" placeholder="e.g. ~200 leads/month from Facebook ads, follow up manually by phone for 2-3 days then they go cold..."></textarea>
-                <div class="qm-error" id="qm-err-leads">Please answer this question</div>
+                <div class="qm-step-num">Question 1 of 4</div>
+                <div class="qm-question">How many deals are you closing per month right now?</div>
+                <textarea class="qm-textarea" id="qm_deals" placeholder="e.g. 8-10 deals/month"></textarea>
+                <div class="qm-error" id="qm-err-deals">Please answer this question</div>
                 <div class="qm-btn-row">
                     <button class="qm-btn-next" onclick="qmGoTo(3)">Continue →</button>
                     <button class="qm-btn-back" onclick="qmGoTo(1)">← Back</button>
                 </div>
             </div>
 
-            <!-- Q3: Independent -->
+            <!-- Q2: Leads in CRM -->
             <div class="qm-step" id="qm-step-3">
-                <div class="qm-step-num">Question 3 of 4</div>
-                <div class="qm-question">Do you run your own independent solar operation, or are you part of an organization like Powur?</div>
-                <div class="qm-radio-group">
-                    <label class="qm-radio-opt" onclick="qmSelectRadio(this,'qm_independent','Independent — I own my leads and customer relationships')">
-                        <input type="radio" name="qm_independent" value="Independent — I own my leads and customer relationships"/>
-                        <div class="qm-dot"></div>
-                        <span class="qm-radio-label">Independent — I own my leads and customer relationships</span>
-                    </label>
-                    <label class="qm-radio-opt" onclick="qmSelectRadio(this,'qm_independent','Part of an org like Powur — leads/customers flow through them')">
-                        <input type="radio" name="qm_independent" value="Part of an org like Powur — leads/customers flow through them"/>
-                        <div class="qm-dot"></div>
-                        <span class="qm-radio-label">Part of an org like Powur — leads/customers flow through them</span>
-                    </label>
-                    <label class="qm-radio-opt" onclick="qmSelectRadio(this,'qm_independent','Both — I have independent volume alongside org work')">
-                        <input type="radio" name="qm_independent" value="Both — I have independent volume alongside org work"/>
-                        <div class="qm-dot"></div>
-                        <span class="qm-radio-label">Both — I have independent volume alongside org work</span>
-                    </label>
-                </div>
-                <div class="qm-error" id="qm-err-independent">Please select an option</div>
+                <div class="qm-step-num">Question 2 of 4</div>
+                <div class="qm-question">How many leads do you currently have in your CRM?</div>
+                <textarea class="qm-textarea" id="qm_crm_leads" placeholder="e.g. ~2,500 leads, mix of old door knocks and Facebook ads"></textarea>
+                <div class="qm-error" id="qm-err-crm_leads">Please answer this question</div>
                 <div class="qm-btn-row">
                     <button class="qm-btn-next" onclick="qmGoTo(4)">Continue →</button>
                     <button class="qm-btn-back" onclick="qmGoTo(2)">← Back</button>
                 </div>
             </div>
 
-            <!-- Q4: Revenue -->
+            <!-- Q3: Lead Source -->
             <div class="qm-step" id="qm-step-4">
-                <div class="qm-step-num">Question 4 of 4</div>
-                <div class="qm-question">What's your current monthly revenue or deal volume?</div>
-                <div class="qm-radio-group">
-                    <label class="qm-radio-opt" onclick="qmSelectRadio(this,'qm_revenue','Under $10K/month')">
-                        <input type="radio" name="qm_revenue" value="Under $10K/month"/>
-                        <div class="qm-dot"></div>
-                        <span class="qm-radio-label">Under $10K/month</span>
-                    </label>
-                    <label class="qm-radio-opt" onclick="qmSelectRadio(this,'qm_revenue','$10K–$30K/month')">
-                        <input type="radio" name="qm_revenue" value="$10K–$30K/month"/>
-                        <div class="qm-dot"></div>
-                        <span class="qm-radio-label">$10K–$30K/month</span>
-                    </label>
-                    <label class="qm-radio-opt" onclick="qmSelectRadio(this,'qm_revenue','$30K–$100K/month')">
-                        <input type="radio" name="qm_revenue" value="$30K–$100K/month"/>
-                        <div class="qm-dot"></div>
-                        <span class="qm-radio-label">$30K–$100K/month</span>
-                    </label>
-                    <label class="qm-radio-opt" onclick="qmSelectRadio(this,'qm_revenue','$100K+/month')">
-                        <input type="radio" name="qm_revenue" value="$100K+/month"/>
-                        <div class="qm-dot"></div>
-                        <span class="qm-radio-label">$100K+/month</span>
-                    </label>
-                </div>
-                <div class="qm-error" id="qm-err-revenue">Please select an option</div>
+                <div class="qm-step-num">Question 3 of 4</div>
+                <div class="qm-question">Where are your leads coming from? (D2D, Facebook, Referrals...)</div>
+                <textarea class="qm-textarea" id="qm_lead_source" placeholder="e.g. Mostly Facebook ads + some door-to-door, a few referrals"></textarea>
+                <div class="qm-error" id="qm-err-lead_source">Please answer this question</div>
                 <div class="qm-btn-row">
-                    <button class="qm-btn-next" id="qm-submit-btn" onclick="qmSubmit()">See If You Qualify →</button>
+                    <button class="qm-btn-next" onclick="qmGoTo(5)">Continue →</button>
                     <button class="qm-btn-back" onclick="qmGoTo(3)">← Back</button>
+                </div>
+            </div>
+
+            <!-- Q4: Book reason -->
+            <div class="qm-step" id="qm-step-5">
+                <div class="qm-step-num">Question 4 of 4</div>
+                <div class="qm-question">What made you decide to book today?</div>
+                <textarea class="qm-textarea" id="qm_book_reason" placeholder="e.g. Saw the video, tired of losing leads to slow follow-up..."></textarea>
+                <div class="qm-error" id="qm-err-book_reason">Please answer this question</div>
+                <div class="qm-btn-row">
+                    <button class="qm-btn-next" id="qm-submit-btn" onclick="qmSubmit()">Book My Call →</button>
+                    <button class="qm-btn-back" onclick="qmGoTo(4)">← Back</button>
                 </div>
             </div>
 
@@ -1958,7 +1926,7 @@
                 </div>
                 <h3>You're in. <em style="font-style:italic;color:#d9963e">Let's talk.</em></h3>
                 <p>Pick a time below — we'll review your answers before the call.</p>
-                <iframe src="https://api.leadconnectorhq.com/widget/booking/FZEEAdwf4gHo1R16LgVs" style="width:100%;height:600px;border:none;overflow:hidden;border-radius:8px;margin-top:8px;" scrolling="no" id="FZEEAdwf4gHo1R16LgVs_1777920178211"></iframe>
+                <iframe id="qm-cal-iframe" src="" style="width:100%;height:600px;border:none;overflow:hidden;border-radius:8px;margin-top:8px;" scrolling="no"></iframe>
             </div>
         </div>`;
         document.body.appendChild(modal);
@@ -1981,7 +1949,7 @@
 
         // ── STATE ────────────────────────────────────────────────────────────────
         let qmStep = 1;
-        const QM_TOTAL = 4;
+        const QM_TOTAL = 5;
 
         function qmReset() {
             qmStep = 1;
@@ -1991,27 +1959,18 @@
             document.getElementById('qm-header').style.display = '';
             document.getElementById('qm-disqualify').classList.remove('show');
             document.getElementById('qm-success').classList.remove('show');
-            document.getElementById('qm_market').value = '';
-            document.getElementById('qm_leads').value = '';
-            document.querySelectorAll('.qm-radio-opt').forEach(o => o.classList.remove('selected'));
-            document.querySelectorAll('input[type=radio]').forEach(r => r.checked = false);
+            ['qm_name','qm_email','qm_deals','qm_crm_leads','qm_lead_source','qm_book_reason'].forEach(id => {
+                const el = document.getElementById(id);
+                if(el) el.value = '';
+            });
             document.querySelectorAll('.qm-error').forEach(e => e.classList.remove('show'));
             const btn = document.getElementById('qm-submit-btn');
-            if(btn){ btn.disabled = false; btn.innerHTML = 'See If You Qualify →'; }
+            if(btn){ btn.disabled = false; btn.innerHTML = 'Book My Call →'; }
         }
 
         // ── NAVIGATION ───────────────────────────────────────────────────────────
         window.qmGoTo = function(step) {
             if(step > qmStep && !qmValidate(qmStep)) return;
-
-            // Disqualify on Powur-only at step 3 → going to 4
-            if(step === 4) {
-                const val = qmGetRadio('qm_independent');
-                if(val === 'Part of an org like Powur — leads/customers flow through them') {
-                    qmDisqualify();
-                    return;
-                }
-            }
 
             document.getElementById('qm-step-' + qmStep).classList.remove('active');
             qmStep = step;
@@ -2023,24 +1982,31 @@
         // ── VALIDATION ───────────────────────────────────────────────────────────
         function qmValidate(step) {
             if(step === 1) {
-                const v = document.getElementById('qm_market').value;
-                if(!v){ qmErr('market', true); return false; }
-                qmErr('market', false);
+                const name = document.getElementById('qm_name').value.trim();
+                const email = document.getElementById('qm_email').value.trim();
+                const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+                if(!name || !emailOk){ qmErr('name', true); return false; }
+                qmErr('name', false);
             }
             if(step === 2) {
-                const v = document.getElementById('qm_leads').value.trim();
-                if(!v){ qmErr('leads', true); return false; }
-                qmErr('leads', false);
+                const v = document.getElementById('qm_deals').value.trim();
+                if(!v){ qmErr('deals', true); return false; }
+                qmErr('deals', false);
             }
             if(step === 3) {
-                const v = qmGetRadio('qm_independent');
-                if(!v){ qmErr('independent', true); return false; }
-                qmErr('independent', false);
+                const v = document.getElementById('qm_crm_leads').value.trim();
+                if(!v){ qmErr('crm_leads', true); return false; }
+                qmErr('crm_leads', false);
             }
             if(step === 4) {
-                const v = qmGetRadio('qm_revenue');
-                if(!v){ qmErr('revenue', true); return false; }
-                qmErr('revenue', false);
+                const v = document.getElementById('qm_lead_source').value.trim();
+                if(!v){ qmErr('lead_source', true); return false; }
+                qmErr('lead_source', false);
+            }
+            if(step === 5) {
+                const v = document.getElementById('qm_book_reason').value.trim();
+                if(!v){ qmErr('book_reason', true); return false; }
+                qmErr('book_reason', false);
             }
             return true;
         }
@@ -2067,51 +2033,45 @@
 
         // ── SUBMIT ───────────────────────────────────────────────────────────────
         window.qmSubmit = async function() {
-            if(!qmValidate(4)) return;
+            if(!qmValidate(5)) return;
 
             const btn = document.getElementById('qm-submit-btn');
             btn.disabled = true;
             btn.innerHTML = '<span class="qm-spinner"></span> Submitting...';
 
+            const fullName = document.getElementById('qm_name').value.trim();
+            const nameParts = fullName.split(' ');
+            const firstName = nameParts[0];
+            const lastName  = nameParts.slice(1).join(' ') || '-';
+
             const payload = {
+                firstName:  firstName,
+                lastName:   lastName,
+                email:      document.getElementById('qm_email').value.trim(),
                 locationId: GHL_LOCATION,
+                tags:       ['landing-page-qualified'],
                 customFields: [
-                    { key: FIELD_KEYS.market,      field_value: document.getElementById('qm_market').value },
-                    { key: FIELD_KEYS.leads,        field_value: document.getElementById('qm_leads').value.trim() },
-                    { key: FIELD_KEYS.independent,  field_value: qmGetRadio('qm_independent') },
-                    { key: FIELD_KEYS.revenue,      field_value: qmGetRadio('qm_revenue') },
+                    { key: FIELD_KEYS.deals,       field_value: document.getElementById('qm_deals').value.trim() },
+                    { key: FIELD_KEYS.crm_leads,   field_value: document.getElementById('qm_crm_leads').value.trim() },
+                    { key: FIELD_KEYS.lead_source, field_value: document.getElementById('qm_lead_source').value.trim() },
+                    { key: FIELD_KEYS.book_reason, field_value: document.getElementById('qm_book_reason').value.trim() },
                 ]
             };
 
             try {
-                await fetch('https://rest.gohighlevel.com/v1/contacts/', {
+                const res = await fetch('https://rest.gohighlevel.com/v1/contacts/', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + GHL_API_KEY },
                     body: JSON.stringify(payload)
                 });
-            } catch(e) { console.error(e); }
+                const data = await res.json();
+                console.log('GHL response:', res.status, data);
+            } catch(e) { console.error('GHL error:', e); }
 
             qmShowSuccess();
         };
 
         async function qmDisqualify() {
-            const payload = {
-                locationId: GHL_LOCATION,
-                tags: ['disqualified', 'powur-rep'],
-                customFields: [
-                    { key: FIELD_KEYS.market,      field_value: document.getElementById('qm_market').value },
-                    { key: FIELD_KEYS.leads,        field_value: document.getElementById('qm_leads').value.trim() },
-                    { key: FIELD_KEYS.independent,  field_value: qmGetRadio('qm_independent') },
-                ]
-            };
-            try {
-                await fetch('https://rest.gohighlevel.com/v1/contacts/', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + GHL_API_KEY },
-                    body: JSON.stringify(payload)
-                });
-            } catch(e) { console.error(e); }
-
             document.querySelectorAll('.qm-step').forEach(s => s.classList.remove('active'));
             document.getElementById('qm-header').style.display = 'none';
             document.getElementById('qm-disqualify').classList.add('show');
@@ -2120,6 +2080,20 @@
         function qmShowSuccess() {
             document.querySelectorAll('.qm-step').forEach(s => s.classList.remove('active'));
             document.getElementById('qm-header').style.display = 'none';
+
+            // Pre-fill the booking calendar with what they already entered
+            const fullName  = document.getElementById('qm_name').value.trim();
+            const nameParts = fullName.split(' ');
+            const firstName = encodeURIComponent(nameParts[0] || '');
+            const lastName  = encodeURIComponent(nameParts.slice(1).join(' ') || '');
+            const email     = encodeURIComponent(document.getElementById('qm_email').value.trim());
+
+            const calIframe = document.getElementById('qm-cal-iframe');
+            calIframe.src = BOOKING_URL
+                + '?firstName=' + firstName
+                + '&lastName='  + lastName
+                + '&email='     + email;
+
             document.getElementById('qm-success').classList.add('show');
         }
 
