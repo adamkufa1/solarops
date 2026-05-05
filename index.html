@@ -1791,7 +1791,7 @@
         style.textContent = `
             #qualify-modal{display:none;position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);align-items:flex-start;justify-content:center;padding:20px;overflow-y:auto;}
             #qualify-modal.open{display:flex;}
-            .qm-wrap{position:relative;width:100%;max-width:600px;margin:auto;background:#111;border:1px solid #262626;border-radius:16px;padding:40px 36px 44px;}
+            .qm-wrap{position:relative;width:100%;max-width:640px;margin:auto;background:#111;border:1px solid #262626;border-radius:16px;padding:40px 36px 44px;}
             @media(max-width:600px){.qm-wrap{padding:28px 20px 36px;}}
             .qm-close{position:absolute;top:16px;right:20px;background:none;border:none;cursor:pointer;color:#6b6b6b;font-size:1.5rem;line-height:1;transition:color .2s;}
             .qm-close:hover{color:#fff;}
@@ -1925,8 +1925,12 @@
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#c8842d" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
                 </div>
                 <h3>You're in. <em style="font-style:italic;color:#d9963e">Let's talk.</em></h3>
-                <p>Pick a time below — we'll review your answers before the call.</p>
-                <iframe id="qm-cal-iframe" src="" style="width:100%;height:600px;border:none;overflow:hidden;border-radius:8px;margin-top:8px;" scrolling="no"></iframe>
+                <p style="margin-bottom:8px;">We've saved your answers. Click below to pick a time — your name and email will already be filled in.</p>
+                <a id="qm-cal-link" href="#" target="_blank" class="qm-btn-next" style="display:inline-flex;margin:16px auto 0;font-size:1rem;padding:14px 32px;text-decoration:none;">
+                    Pick a Time
+                    <svg style="width:15px;height:15px;margin-left:8px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </a>
+                <p style="font-size:.78rem;color:#6b6b6b;margin-top:14px;">Opens in a new tab &bull; 30 min call</p>
             </div>
         </div>`;
         document.body.appendChild(modal);
@@ -2081,20 +2085,23 @@
             document.querySelectorAll('.qm-step').forEach(s => s.classList.remove('active'));
             document.getElementById('qm-header').style.display = 'none';
 
-            // Pre-fill the booking calendar with what they already entered
             const fullName  = document.getElementById('qm_name').value.trim();
             const nameParts = fullName.split(' ');
-            const firstName = encodeURIComponent(nameParts[0] || '');
-            const lastName  = encodeURIComponent(nameParts.slice(1).join(' ') || '');
-            const email     = encodeURIComponent(document.getElementById('qm_email').value.trim());
+            const firstName = nameParts[0] || '';
+            const lastName  = nameParts.slice(1).join(' ') || '';
+            const email     = document.getElementById('qm_email').value.trim();
 
-            const calIframe = document.getElementById('qm-cal-iframe');
-            calIframe.src = BOOKING_URL
-                + '?firstName=' + firstName
-                + '&lastName='  + lastName
-                + '&email='     + email;
+            // Build the booking URL with pre-filled name + email
+            const bookingLink = BOOKING_URL
+                + '?firstName=' + encodeURIComponent(firstName)
+                + '&lastName='  + encodeURIComponent(lastName)
+                + '&email='     + encodeURIComponent(email);
+
+            // Set the button link — opens full GHL page with fields pre-filled
+            document.getElementById('qm-cal-link').href = bookingLink;
 
             document.getElementById('qm-success').classList.add('show');
+            modal.scrollTop = 0;
         }
 
     })();
