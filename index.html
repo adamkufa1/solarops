@@ -1702,263 +1702,54 @@
     }, {threshold: 0.5});
     if(phoneWrap) phoneIO.observe(phoneWrap);
 
-    // BOOKING MODAL
+    // BOOKING POPUP (GoHighLevel iframe)
     (function(){
         const BOOKING_URL = 'https://api.leadconnectorhq.com/widget/booking/FZEEAdwf4gHo1R16LgVs';
-        const GHL_API_KEY  = 'pit-dadb099c-6911-419b-bfcf-84ab4ee29edd';
-        const GHL_LOCATION = '8w0u6rqmMplZQ8KvLtvw';
 
-
-        // ── BUILD MODAL ──────────────────────────────────────────────────────────
+        // Inject styles
         const style = document.createElement('style');
         style.textContent = `
-            #qualify-modal{display:none;position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);align-items:flex-start;justify-content:center;padding:20px;overflow-y:auto;}
-            #qualify-modal.open{display:flex;}
-            .qm-wrap{position:relative;width:100%;max-width:640px;margin:auto;background:#111;border:1px solid #262626;border-radius:16px;padding:40px 36px 44px;}
-            @media(max-width:600px){.qm-wrap{padding:28px 20px 36px;}}
-            .qm-close{position:absolute;top:16px;right:20px;background:none;border:none;cursor:pointer;color:#6b6b6b;font-size:1.5rem;line-height:1;transition:color .2s;}
-            .qm-close:hover{color:#fff;}
-            .qm-tag{display:inline-flex;align-items:center;gap:8px;font-size:.75rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#c8842d;margin-bottom:18px;}
-            .qm-tag::before,.qm-tag::after{content:'';width:14px;height:1px;background:#c8842d;opacity:.5;}
-            .qm-headline{font-family:'Playfair Display',Georgia,serif;font-size:clamp(1.5rem,3.5vw,2.1rem);font-weight:400;line-height:1.15;color:#fff;margin-bottom:8px;}
-            .qm-headline em{font-style:italic;color:#d9963e;}
-            .qm-sub{font-size:.9rem;color:#999;font-weight:300;margin-bottom:28px;line-height:1.7;}
-            .qm-progress{height:2px;background:#262626;border-radius:2px;margin-bottom:32px;overflow:hidden;}
-            .qm-progress-fill{height:100%;background:#c8842d;border-radius:2px;transition:width .4s ease;width:0%;}
-            .qm-step{display:none;}
-            .qm-step.active{display:block;animation:qmFadeUp .35s ease;}
-            @keyframes qmFadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
-            .qm-step-num{font-size:.72rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:#6b6b6b;margin-bottom:8px;}
-            .qm-question{font-family:'Playfair Display',Georgia,serif;font-size:clamp(1.05rem,2.5vw,1.35rem);font-weight:400;color:#fff;line-height:1.35;margin-bottom:22px;}
-            .qm-select{width:100%;background:#1a1a1a;border:1px solid #262626;border-radius:8px;color:#fff;font-family:'DM Sans',sans-serif;font-size:.95rem;font-weight:300;padding:13px 40px 13px 16px;outline:none;appearance:none;cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b6b6b' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;transition:border-color .2s,box-shadow .2s;}
-            .qm-select:focus{border-color:#c8842d;box-shadow:0 0 0 3px rgba(200,132,45,.12);}
-            .qm-select option{background:#1a1a1a;}
-            .qm-textarea{width:100%;background:#1a1a1a;border:1px solid #262626;border-radius:8px;color:#fff;font-family:'DM Sans',sans-serif;font-size:.95rem;font-weight:300;padding:13px 16px;outline:none;resize:vertical;min-height:90px;line-height:1.6;transition:border-color .2s,box-shadow .2s;}
-            .qm-textarea:focus{border-color:#c8842d;box-shadow:0 0 0 3px rgba(200,132,45,.12);}
-            .qm-radio-group{display:flex;flex-direction:column;gap:9px;}
-            .qm-radio-opt{display:flex;align-items:center;gap:12px;background:#1a1a1a;border:1px solid #262626;border-radius:8px;padding:12px 16px;cursor:pointer;transition:border-color .2s,background .2s;user-select:none;}
-            .qm-radio-opt:hover{border-color:#3a3a3a;}
-            .qm-radio-opt.selected{border-color:#c8842d;background:rgba(200,132,45,.07);}
-            .qm-radio-opt input{display:none;}
-            .qm-dot{width:17px;height:17px;border-radius:50%;border:1.5px solid #6b6b6b;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:border-color .2s;}
-            .qm-radio-opt.selected .qm-dot{border-color:#c8842d;background:#c8842d;}
-            .qm-radio-opt.selected .qm-dot::after{content:'';width:5px;height:5px;border-radius:50%;background:#fff;}
-            .qm-radio-label{font-size:.9rem;color:#bbb;font-weight:300;}
-            .qm-radio-opt.selected .qm-radio-label{color:#fff;}
-            .qm-error{font-size:.78rem;color:#e07070;margin-top:6px;display:none;}
-            .qm-error.show{display:block;}
-            .qm-btn-row{display:flex;align-items:center;gap:20px;margin-top:24px;flex-wrap:wrap;}
-            .qm-btn-next{display:inline-flex;align-items:center;gap:8px;background:#c8842d;color:#fff;font-family:'DM Sans',sans-serif;font-size:.95rem;font-weight:500;padding:13px 30px;border:none;border-radius:6px;cursor:pointer;transition:background .2s,transform .15s;letter-spacing:.01em;}
-            .qm-btn-next:hover{background:#d9963e;transform:translateY(-1px);}
-            .qm-btn-next:disabled{opacity:.5;cursor:not-allowed;transform:none;}
-            .qm-btn-back{background:none;border:none;color:#6b6b6b;font-family:'DM Sans',sans-serif;font-size:.88rem;cursor:pointer;padding:0;transition:color .2s;}
-            .qm-btn-back:hover{color:#bbb;}
-            .qm-disqualify,.qm-success{display:none;text-align:center;padding:16px 0;}
-            .qm-disqualify.show,.qm-success.show{display:block;animation:qmFadeUp .4s ease;}
-            .qm-disqualify h3,.qm-success h3{font-family:'Playfair Display',Georgia,serif;font-size:1.5rem;color:#fff;margin-bottom:10px;}
-            .qm-disqualify p,.qm-success p{font-size:.9rem;color:#999;font-weight:300;line-height:1.7;margin-bottom:24px;}
-            .qm-success-icon{width:56px;height:56px;border-radius:50%;background:rgba(200,132,45,.1);border:1.5px solid rgba(200,132,45,.35);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;}
-            .qm-spinner{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:qmSpin .7s linear infinite;}
-            @keyframes qmSpin{to{transform:rotate(360deg)}}
+            #booking-overlay{display:none;position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);align-items:flex-start;justify-content:center;padding:24px 16px;overflow-y:auto;}
+            #booking-overlay.open{display:flex;}
+            .bk-wrap{position:relative;width:100%;max-width:900px;background:#0b0b0b;border:1px solid #262626;border-radius:16px;overflow:visible;margin:auto;}
+            .bk-close{position:fixed;top:24px;right:24px;background:rgba(11,11,11,.95);border:1px solid #262626;color:#bbb;font-size:1.4rem;line-height:1;width:40px;height:40px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:10001;transition:all .2s;}
+            .bk-close:hover{color:#fff;border-color:#c8842d;background:rgba(200,132,45,.15);}
+            .bk-iframe-wrap{background:#fff;border-radius:16px;overflow:hidden;min-height:600px;}
+            .bk-iframe-wrap iframe{width:100%;border:none;display:block;min-height:600px;}
+            @media(max-width:640px){.bk-close{top:12px;right:12px;width:36px;height:36px;}#booking-overlay{padding:12px 8px;}.bk-iframe-wrap{min-height:560px;}.bk-iframe-wrap iframe{min-height:560px;}}
         `;
         document.head.appendChild(style);
 
-        const modal = document.createElement('div');
-        modal.id = 'qualify-modal';
-        modal.innerHTML = `
-        <div class="qm-wrap">
-            <button class="qm-close" id="qm-close-btn">&times;</button>
-
-            <div id="qm-header">
-                <div class="qm-tag">Quick Application</div>
-                <h2 class="qm-headline">Book a <em>strategy call.</em></h2>
-                <p class="qm-sub">We work with a small number of operators each quarter. Drop your info and pick a time.</p>
-
-            </div>
-
-            <!-- Q0: Name + Email -->
-            <div class="qm-step active" id="qm-step-1">
-
-                <div class="qm-question">First, who are we talking to?</div>
-                <input class="qm-textarea" id="qm_name" type="text" placeholder="Your full name" style="min-height:unset;height:48px;resize:none;margin-bottom:12px;" />
-                <input class="qm-textarea" id="qm_email" type="email" placeholder="Your email address" style="min-height:unset;height:48px;resize:none;" />
-                <div class="qm-error" id="qm-err-name">Please enter your name and a valid email</div>
-                <div class="qm-btn-row">
-                    <button class="qm-btn-next" id="qm-submit-btn" onclick="qmSubmit()">Book My Call →</button>
+        // Inject overlay markup
+        const overlay = document.createElement('div');
+        overlay.id = 'booking-overlay';
+        overlay.innerHTML = `
+            <button class="bk-close" id="bk-close-btn" aria-label="Close">&times;</button>
+            <div class="bk-wrap">
+                <div class="bk-iframe-wrap">
+                    <iframe src="${BOOKING_URL}" id="booking-iframe" title="Book a strategy call" style="width:100%;height:780px;" scrolling="yes"></iframe>
                 </div>
             </div>
+        `;
+        document.body.appendChild(overlay);
 
-
-            <!-- DISQUALIFIED -->
-            <div class="qm-disqualify" id="qm-disqualify">
-                <h3>Not quite the right fit — yet.</h3>
-                <p>We work best with operators who control their own leads and customer relationships. If your situation changes or you have independent volume outside your org, reach out at <a href="mailto:info@solaropsmafia.com" style="color:#c8842d">info@solaropsmafia.com</a>.</p>
-            </div>
-
-            <!-- SUCCESS -->
-            <div class="qm-success" id="qm-success">
-                <div class="qm-success-icon">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#c8842d" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                </div>
-                <h3>You're in. <em style="font-style:italic;color:#d9963e">Let's talk.</em></h3>
-                <p style="margin-bottom:8px;">We've saved your answers. Click below to pick a time — your name and email will already be filled in.</p>
-                <a id="qm-cal-link" href="#" target="_blank" class="qm-btn-next" style="display:inline-flex;margin:16px auto 0;font-size:1rem;padding:14px 32px;text-decoration:none;">
-                    Pick a Time
-                    <svg style="width:15px;height:15px;margin-left:8px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-                </a>
-                <p style="font-size:.78rem;color:#6b6b6b;margin-top:14px;">Opens in a new tab &bull; 30 min call</p>
-            </div>
-        </div>`;
-        document.body.appendChild(modal);
-
-        // ── MODAL OPEN/CLOSE ─────────────────────────────────────────────────────
-        function openModal() {
-            modal.classList.add('open');
+        function openBooking(){
+            overlay.classList.add('open');
             document.body.style.overflow = 'hidden';
-            qmReset();
         }
-        function closeModal() {
-            modal.classList.remove('open');
+        function closeBooking(){
+            overlay.classList.remove('open');
             document.body.style.overflow = '';
         }
 
-        document.getElementById('qm-close-btn').addEventListener('click', closeModal);
-        modal.addEventListener('click', function(e){ if(e.target === modal) closeModal(); });
-        document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeModal(); });
-        document.querySelectorAll('.cta-trigger').forEach(btn => btn.addEventListener('click', openModal));
+        document.getElementById('bk-close-btn').addEventListener('click', closeBooking);
+        overlay.addEventListener('click', function(e){ if(e.target === overlay) closeBooking(); });
+        document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && overlay.classList.contains('open')) closeBooking(); });
 
-        // ── STATE ────────────────────────────────────────────────────────────────
-        let qmStep = 1;
-        const QM_TOTAL = 1;
-
-        function qmReset() {
-            qmStep = 1;
-            document.querySelectorAll('.qm-step').forEach(s => s.classList.remove('active'));
-            document.getElementById('qm-step-1').classList.add('active');
-            document.getElementById('qm-progress').style.width = '0%';
-            document.getElementById('qm-header').style.display = '';
-            document.getElementById('qm-disqualify').classList.remove('show');
-            document.getElementById('qm-success').classList.remove('show');
-            ['qm_name','qm_email'].forEach(id => {
-                const el = document.getElementById(id);
-                if(el) el.value = '';
-            });
-            document.querySelectorAll('.qm-error').forEach(e => e.classList.remove('show'));
-            const btn = document.getElementById('qm-submit-btn');
-            if(btn){ btn.disabled = false; btn.innerHTML = 'Book My Call →'; }
-        }
-
-        // ── NAVIGATION ───────────────────────────────────────────────────────────
-        window.qmGoTo = function(step) {
-            if(step > qmStep && !qmValidate(qmStep)) return;
-
-            document.getElementById('qm-step-' + qmStep).classList.remove('active');
-            qmStep = step;
-            document.getElementById('qm-step-' + qmStep).classList.add('active');
-            document.getElementById('qm-progress').style.width = (((qmStep - 1) / QM_TOTAL) * 100) + '%';
-            modal.scrollTop = 0;
-        };
-
-        // ── VALIDATION ───────────────────────────────────────────────────────────
-        function qmValidate(step) {
-            if(step === 1) {
-                const name = document.getElementById('qm_name').value.trim();
-                const email = document.getElementById('qm_email').value.trim();
-                const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-                if(!name || !emailOk){ qmErr('name', true); return false; }
-                qmErr('name', false);
-            }
-            return true;
-        }
-
-        function qmErr(key, show) {
-            const el = document.getElementById('qm-err-' + key);
-            if(el) el.classList.toggle('show', show);
-        }
-
-        // ── RADIO ────────────────────────────────────────────────────────────────
-        window.qmSelectRadio = function(label, name, value) {
-            document.querySelectorAll('input[name="' + name + '"]').forEach(r => {
-                r.closest('.qm-radio-opt').classList.remove('selected');
-            });
-            label.classList.add('selected');
-            label.querySelector('input').checked = true;
-            qmErr(name.replace('qm_',''), false);
-        };
-
-        function qmGetRadio(name) {
-            const checked = document.querySelector('input[name="' + name + '"]:checked');
-            return checked ? checked.value : '';
-        }
-
-        // ── SUBMIT ───────────────────────────────────────────────────────────────
-        window.qmSubmit = async function() {
-            if(!qmValidate(1)) return;
-
-            const btn = document.getElementById('qm-submit-btn');
-            btn.disabled = true;
-            btn.innerHTML = '<span class="qm-spinner"></span> Submitting...';
-
-            const fullName = document.getElementById('qm_name').value.trim();
-            const nameParts = fullName.split(' ');
-            const firstName = nameParts[0];
-            const lastName  = nameParts.slice(1).join(' ') || '-';
-
-            const payload = {
-                firstName:  firstName,
-                lastName:   lastName,
-                email:      document.getElementById('qm_email').value.trim(),
-                locationId: GHL_LOCATION,
-                tags:       ['landing-page-qualified'],
-            };
-
-            try {
-                const res = await fetch('https://services.leadconnectorhq.com/contacts/upsert', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': 'Bearer ' + GHL_API_KEY,
-                        'Version': '2021-07-28'
-                    },
-                    body: JSON.stringify(payload)
-                });
-                const data = await res.json();
-                console.log('GHL upsert:', res.status, data);
-            } catch(e) { console.error('GHL error:', e); }
-
-            qmShowSuccess();
-        };
-
-        async function qmDisqualify() {
-            document.querySelectorAll('.qm-step').forEach(s => s.classList.remove('active'));
-            document.getElementById('qm-header').style.display = 'none';
-            document.getElementById('qm-disqualify').classList.add('show');
-        }
-
-        function qmShowSuccess() {
-            document.querySelectorAll('.qm-step').forEach(s => s.classList.remove('active'));
-            document.getElementById('qm-header').style.display = 'none';
-
-            const fullName  = document.getElementById('qm_name').value.trim();
-            const nameParts = fullName.split(' ');
-            const firstName = nameParts[0] || '';
-            const lastName  = nameParts.slice(1).join(' ') || '';
-            const email     = document.getElementById('qm_email').value.trim();
-
-            // Build the booking URL with pre-filled name + email
-            const bookingLink = BOOKING_URL
-                + '?firstName=' + encodeURIComponent(firstName)
-                + '&lastName='  + encodeURIComponent(lastName)
-                + '&email='     + encodeURIComponent(email);
-
-            // Set the button link — opens full GHL page with fields pre-filled
-            document.getElementById('qm-cal-link').href = bookingLink;
-
-            document.getElementById('qm-success').classList.add('show');
-            modal.scrollTop = 0;
-        }
-
+        // Wire all CTAs
+        document.querySelectorAll('.cta-trigger').forEach(btn => btn.addEventListener('click', openBooking));
     })();
+
 
     // PARTICLE FIELD + ROCKET ANIMATION
     (function(){
