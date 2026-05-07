@@ -1126,7 +1126,7 @@
         <!-- Modal header -->
         <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 24px;border-bottom:1px solid #262626;flex-shrink:0;">
             <span style="font-family:'DM Sans',sans-serif;font-size:.75rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#c8842d;">Reactivation Machine</span>
-            <button id="rm-close" style="background:none;border:none;cursor:pointer;color:#6b6b6b;font-size:1.5rem;line-height:1;padding:2px 8px;transition:color .2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#6b6b6b'">&times;</button>
+            <button id="rm-close-btn" style="background:none;border:none;cursor:pointer;color:#6b6b6b;font-size:1.5rem;line-height:1;padding:2px 8px;transition:color .2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#6b6b6b'">&times;</button>
         </div>
         <!-- Screen area — scrollable -->
         <div id="rm-app" style="flex:1;overflow-y:auto;overflow-x:hidden;position:relative;"></div>
@@ -1628,7 +1628,7 @@
     window.rmClose = function() { modal.style.display='none'; document.body.style.overflow=''; };
 
     document.getElementById('rm-open-btn').addEventListener('click', rmOpen);
-    document.getElementById('rm-close').addEventListener('click', window.rmClose);
+    document.getElementById('rm-close-btn').addEventListener('click', window.rmClose);
     modal.addEventListener('click', function(e){ if(e.target===modal) window.rmClose(); });
     document.addEventListener('keydown', function(e){ if(e.key==='Escape' && modal.style.display==='flex') window.rmClose(); });
 })();
