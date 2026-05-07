@@ -685,26 +685,29 @@
     <div class="container">
         <div class="math-inner reveal">
             <h2 data-i18n="math.h2">The revenue is already there. <em>It just needs a system to collect it.</em></h2>
-            <p class="lead" data-i18n="math.lead">Most established solar orgs are sitting on 2,000 to 20,000 cold leads. Here is what that actually looks like as a number.</p>
+            <p class="lead" data-i18n="math.lead">Steve had 3,000 door knock contacts written off two years ago. Here is exactly what the system did with them in 60 days.</p>
             <div class="math-block reveal reveal-d1">
                 <div class="math-line">
-                    <span class="math-value">2,000</span>
-                    <span class="math-op" data-i18n="math.op1">cold leads in your CRM</span>
+                    <span class="math-value">3,000</span>
+                    <span class="math-op" data-i18n="math.op1">door knock contacts &bull; 2 years cold</span>
                 </div>
                 <div class="math-line">
-                    <span class="math-value">3%</span>
-                    <span class="math-op">&times;</span>
-                    <span class="math-desc" data-i18n="math.desc1">contact-to-book rate with a consistent AI follow-up system</span>
+                    <span class="math-value">40</span>
+                    <span class="math-op" data-i18n="math.op2">appointments booked</span>
+                    <span class="math-desc" data-i18n="math.desc2">from a list his team had completely given up on</span>
                 </div>
                 <div class="math-line">
-                    <span class="math-value">60</span>
-                    <span class="math-op" data-i18n="math.op2">appointments</span>
-                    <span class="math-desc" data-i18n="math.desc2">from leads your team had given up on</span>
+                    <span class="math-value">26</span>
+                    <span class="math-op" data-i18n="math.op3">sat with a closer</span>
+                </div>
+                <div class="math-line">
+                    <span class="math-value">10</span>
+                    <span class="math-op" data-i18n="math.op4">deals signed</span>
                 </div>
                 <div class="math-equals"></div>
-                <div class="math-result" data-i18n="math.result">60 appointments &times; your close rate &times; your deal size = <em>your number.</em></div>
+                <div class="math-result" data-i18n="math.result"><em>$60,000 recovered.</em> Zero new ad spend. One source.</div>
             </div>
-            <p class="math-caption reveal reveal-d2" data-i18n="math.caption">Steve had 3,000 door knock contacts written off two years ago. The system booked 40 appointments. 26 sat. 9 went live to a closer. 10 deals signed in 60 days. $60,000 recovered. You have that many leads sitting in your CRM right now.</p>
+            <p class="math-caption reveal reveal-d2" data-i18n="math.caption">And remember — these were 2-year-old door knocks. The worst leads in his database. Imagine what happens with the fresher ones, the no-shows, the inbound calls. Run your numbers below.</p>
             <div class="reveal reveal-d3" style="margin-top:48px;text-align:center;">
                 <button id="rm-open-btn" style="display:inline-flex;align-items:center;gap:10px;padding:16px 38px;background:transparent;border:1px solid var(--whiskey);color:var(--whiskey);font-family:var(--sans);font-size:1rem;font-weight:500;letter-spacing:.04em;border-radius:6px;cursor:pointer;transition:all .3s;" onmouseover="this.style.background='rgba(200,132,45,.1)';this.style.transform='translateY(-2px)'" onmouseout="this.style.background='transparent';this.style.transform='translateY(0)'">
                     Calculate Your Number
@@ -1262,7 +1265,7 @@
 .rm-closer-card.rm-animating .rm-check-item:nth-child(5){animation-delay:.95s}
 .rm-closer-card.rm-animating .rm-conf-fill { animation: rmFillBar 1s ease 1.3s forwards; }
 @keyframes rmCheckIn { from{opacity:0;transform:translateX(-14px)} to{opacity:1;transform:translateX(0)} }
-@keyframes rmFillBar { from{width:0} to{width:78%} }
+@keyframes rmFillBar { from{width:0} to{width:65%} }
 /* Screen 5 */
 .rm-big-number { font-family: 'Playfair Display', Georgia, serif; font-size: clamp(3rem, 9vw, 6rem); font-weight: 700; color: #f5f5f0; line-height: 1; margin-bottom: 18px; }
 .rm-big-line { font-size: 1.1rem; color: #999; font-weight: 400; line-height: 1.8; }
@@ -1276,7 +1279,7 @@
     var modal = document.getElementById('rm-modal');
     var app   = document.getElementById('rm-app');
 
-    var AI_BOOK = 0.03, SHOWUP = 0.78;
+    var AI_BOOK = 0.0133, SHOWUP = 0.65;
     var rmCurrent = 1, rmStored = 0;
     var rmSmsPlayed = false, rmSetterPlayed = false, rmCloserPlayed = false, rm5Played = false;
     var rmAnimId = null, rmCalcTimer = null;
@@ -1286,7 +1289,7 @@
       // Screen 1
       '<div class="rm-screen rm-active" id="rms-1">',
         '<div class="rm-calc-label">Recoverable Pipeline Value</div>',
-        '<div class="rm-calc-amount" id="rm-calc-amount">$26,732</div>',
+        '<div class="rm-calc-amount" id="rm-calc-amount">$9,879</div>',
         '<p class="rm-calc-sub">Sitting in your dead leads right now.</p>',
         '<div class="rm-calc-card">',
           '<div class="rm-calc-card-label">Your numbers</div>',
@@ -1300,19 +1303,19 @@
             '<div class="rm-input-row"><div class="rm-input-pfx">$</div><input type="number" id="rm-deal" value="2400" min="0" step="100" inputmode="numeric"></div></div>',
         '</div>',
         '<div class="rm-system-rates">',
-          '<div class="rm-rate"><div class="rm-rate-val">3%</div><div class="rm-rate-label">AI book rate</div></div>',
-          '<div class="rm-rate"><div class="rm-rate-val">78%</div><div class="rm-rate-label">Show-up rate</div></div>',
+          '<div class="rm-rate"><div class="rm-rate-val">1.33%</div><div class="rm-rate-label">AI book rate</div></div>',
+          '<div class="rm-rate"><div class="rm-rate-val">65%</div><div class="rm-rate-label">Show-up rate</div></div>',
         '</div>',
         '<div class="rm-funnel">',
           '<div class="rm-funnel-step"><div class="rm-funnel-val" id="rm-f-leads">2,000</div><div class="rm-funnel-lbl">Leads</div></div>',
           '<span class="rm-funnel-arr">→</span>',
-          '<div class="rm-funnel-step"><div class="rm-funnel-val" id="rm-f-appts">60</div><div class="rm-funnel-lbl">Appts</div></div>',
+          '<div class="rm-funnel-step"><div class="rm-funnel-val" id="rm-f-appts">27</div><div class="rm-funnel-lbl">Appts</div></div>',
           '<span class="rm-funnel-arr">→</span>',
-          '<div class="rm-funnel-step"><div class="rm-funnel-val" id="rm-f-sits">47</div><div class="rm-funnel-lbl">Sits</div></div>',
+          '<div class="rm-funnel-step"><div class="rm-funnel-val" id="rm-f-sits">17</div><div class="rm-funnel-lbl">Sits</div></div>',
           '<span class="rm-funnel-arr">→</span>',
-          '<div class="rm-funnel-step"><div class="rm-funnel-val" id="rm-f-deals">13</div><div class="rm-funnel-lbl">Deals</div></div>',
+          '<div class="rm-funnel-step"><div class="rm-funnel-val" id="rm-f-deals">5</div><div class="rm-funnel-lbl">Deals</div></div>',
           '<span class="rm-funnel-arr">→</span>',
-          '<div class="rm-funnel-step"><div class="rm-funnel-val" id="rm-f-installs">11</div><div class="rm-funnel-lbl">Installs</div></div>',
+          '<div class="rm-funnel-step"><div class="rm-funnel-val" id="rm-f-installs">4</div><div class="rm-funnel-lbl">Installs</div></div>',
         '</div>',
         '<button class="rm-cta-btn" onclick="rmGoTo(2)">Watch It Work →</button>',
       '</div>',
@@ -1367,7 +1370,7 @@
           '<div class="rm-card-div"></div>',
           '<div><div class="rm-conf-label"><span>Show-up Confidence</span><span class="rm-conf-pct" id="rm-conf-pct">0%</span></div><div class="rm-conf-track"><div class="rm-conf-fill" id="rm-conf-fill"></div></div></div>',
         '</div>',
-        '<button class="rm-cta-btn" onclick="rmGoTo(5)">This is why the show-up rate is 78% →</button>',
+        '<button class="rm-cta-btn" onclick="rmGoTo(5)">This is why the show-up rate is 65% →</button>',
       '</div>',
 
       // Screen 5
@@ -1608,7 +1611,7 @@
         document.getElementById('rm-closer-card').classList.add('rm-animating');
         setTimeout(function(){
             var el=document.getElementById('rm-conf-pct'), start=performance.now(), dur=1000;
-            function tick(now){ var p=Math.min((now-start)/dur,1), e=1-Math.pow(1-p,3); el.textContent=Math.round(78*e)+'%'; if(p<1) requestAnimationFrame(tick); }
+            function tick(now){ var p=Math.min((now-start)/dur,1), e=1-Math.pow(1-p,3); el.textContent=Math.round(65*e)+'%'; if(p<1) requestAnimationFrame(tick); }
             requestAnimationFrame(tick);
         }, 1300);
     }
@@ -2463,13 +2466,13 @@
 
         // MATH
         "math.h2": "El revenue ya est\u00e1 ah\u00ed. <em>Solo necesita un sistema que lo recoja.</em>",
-        "math.lead": "La mayor\u00eda de las organizaciones solares establecidas tienen de 2,000 a 20,000 leads fr\u00edos. Esto es lo que eso se ve como n\u00famero.",
-        "math.op1": "leads fr\u00edos en tu CRM",
-        "math.desc1": "tasa de contacto-a-cita con un sistema consistente de seguimiento con AI",
-        "math.op2": "citas",
-        "math.desc2": "de leads que tu equipo ya hab\u00eda dado por muertos",
-        "math.result": "60 citas \u00d7 tu tasa de cierre \u00d7 tu tama\u00f1o de deal = <em>tu n\u00famero.</em>",
-        "math.caption": "Steve ten\u00eda 3,000 contactos de toques de puerta descartados hace dos a\u00f1os. El sistema agend\u00f3 40 citas. 26 se sentaron. 9 fueron en vivo a un closer. 10 deals cerrados en 60 d\u00edas. $60,000 recuperados. T\u00fa tienes esa cantidad de leads sentados en tu CRM ahora mismo.",
+        "math.lead": "Steve ten\u00eda 3,000 contactos de toques de puerta descartados hace dos a\u00f1os. Esto es exactamente lo que el sistema hizo con ellos en 60 d\u00edas.",
+        "math.op1": "contactos de toques de puerta \u2022 2 a\u00f1os fr\u00edos",        "math.op2": "citas agendadas",
+        "math.op3": "se sentaron con un closer",
+        "math.op4": "deals firmados",
+        "math.desc2": "de una lista que su equipo hab\u00eda dado por muerta",
+        "math.result": "<em>$60,000 recuperados.</em> Cero gasto nuevo en anuncios. Una fuente.",
+        "math.caption": "Y acu\u00e9rdate \u2014 esos eran toques de puerta de hace 2 a\u00f1os. Los peores leads de su base de datos. Imag\u00ednate lo que pasa con los m\u00e1s frescos, los no-shows, las llamadas entrantes. Calcula tus n\u00fameros abajo.",
 
         // LEAK
         "leak.h2": "Cinco lugares donde tu pipeline pierde revenue todos los d\u00edas.",
