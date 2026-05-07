@@ -350,6 +350,21 @@
         .net-node-dot.dim{fill:rgba(200,132,45,0.5)}
         @keyframes ringPulse{0%,100%{opacity:.2}50%{opacity:.5}}
 
+        /* IVAN TESTIMONIAL */
+        .ivan-section{background:var(--black);position:relative;overflow:hidden;padding:140px 0}
+        .ivan-section::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:900px;height:600px;background:radial-gradient(ellipse,rgba(200,132,45,.08) 0%,transparent 65%);pointer-events:none}
+        .ivan-inner{max-width:880px;margin:0 auto;text-align:center;position:relative;z-index:1}
+        .ivan-inner h2{font-family:var(--serif);font-size:clamp(2rem,4vw,3rem);font-weight:400;line-height:1.25;margin:24px 0 20px}
+        .ivan-inner h2 em{font-style:italic;color:var(--whiskey-glow)}
+        .ivan-sub{font-size:1.15rem;color:var(--fog);font-weight:300;line-height:1.85;max-width:660px;margin:0 auto 56px}
+        .ivan-video-wrap{position:relative;border-radius:16px;overflow:hidden;background:var(--carbon);border:1px solid var(--graphite);box-shadow:0 30px 80px rgba(0,0,0,.4)}
+        .ivan-video-frame{position:relative;width:100%;padding-top:56.25%;background:#000}
+        .ivan-video-frame iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:none}
+        .ivan-meta{padding:22px 28px;border-top:1px solid var(--graphite);text-align:left;background:var(--carbon)}
+        .ivan-meta-name{font-family:var(--sans);font-size:.95rem;font-weight:600;color:var(--white);letter-spacing:.02em}
+        .ivan-meta-role{font-size:.78rem;color:var(--whiskey);font-weight:500;letter-spacing:.06em;margin-top:3px}
+        @media(max-width:640px){.ivan-section{padding:64px 0}.ivan-sub{font-size:1rem;margin-bottom:36px}.ivan-meta{padding:18px 22px}.ivan-meta-name{font-size:.9rem}.ivan-meta-role{font-size:.72rem}}
+
         /* FOR / NOT FOR */
         .for-section{background:var(--dark);position:relative;overflow:hidden}
         .for-section::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:700px;height:500px;background:radial-gradient(ellipse,rgba(200,132,45,.07) 0%,transparent 65%);pointer-events:none}
@@ -1037,6 +1052,32 @@
     </div>
 </section>
 
+
+<!-- IVAN TESTIMONIAL -->
+<section class="ivan-section">
+    <div class="container">
+        <div class="ivan-inner reveal">
+            <span class="section-tag" data-i18n="ivan.tag">From Someone Who Knows</span>
+            <h2 data-i18n="ivan.h2">Three years. <em>Same team.</em></h2>
+            <p class="ivan-sub" data-i18n="ivan.sub">Ivan runs one of the largest solar YouTube channels and has worked with us for over three years. Here is what he has to say to his audience about us, unprompted.</p>
+            <div class="ivan-video-wrap">
+                <div class="ivan-video-frame">
+                    <iframe
+                        src="https://www.youtube.com/embed/jOOBrjjINRc?start=218&rel=0&modestbranding=1"
+                        title="Solar Boss testimonial — Solar Ops Mafia"
+                        frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        referrerpolicy="strict-origin-when-cross-origin"
+                        allowfullscreen></iframe>
+                </div>
+                <div class="ivan-meta">
+                    <div class="ivan-meta-name" data-i18n="ivan.name">Ivan &bull; Solar Boss</div>
+                    <div class="ivan-meta-role" data-i18n="ivan.role">YouTube channel owner &bull; 3+ years working with Solar Ops Mafia</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
 <!-- FOR / NOT FOR -->
 <section class="for-section">
@@ -2369,6 +2410,13 @@
         // SCALE
         "scale.h2": "Una ubicaci\u00f3n hoy. <em>Toda la red ma\u00f1ana.</em>",
         "scale.p": "Cada sistema que construimos est\u00e1 dise\u00f1ado pa\u2019 duplicarse. Nueva ubicaci\u00f3n, nuevo mercado, nuevo socio. <strong>La infraestructura crece contigo.</strong>",
+
+        // IVAN TESTIMONIAL
+        "ivan.tag": "De Alguien Que Sabe",
+        "ivan.h2": "Tres a\u00f1os. <em>Mismo equipo.</em>",
+        "ivan.sub": "Ivan tiene uno de los canales de YouTube de solar m\u00e1s grandes y ha trabajado con nosotros por m\u00e1s de tres a\u00f1os. Esto es lo que les dice a su audiencia sobre nosotros, sin que se lo pidamos.",
+        "ivan.name": "Ivan \u2022 Solar Boss",
+        "ivan.role": "Due\u00f1o de canal de YouTube \u2022 3+ a\u00f1os trabajando con Solar Ops Mafia",
 
         // FOR / NOT FOR
         "for.h2": "S\u00e9 honesto contigo mismo.",
